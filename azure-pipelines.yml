@@ -1,0 +1,55 @@
+# ASP.NET Core (.NET Framework)
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Debug'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: 6.x
+    packageType: runtime
+  displayName: 'Using DotNet runtime'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/AssetManagement.csproj'
+  displayName: "Restore package"
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: '**/AssetManagement.csproj'
+    arguments: '--configuration  $(buildConfiguration)'
+  displayName: 'Build project with config $(buildConfiguration)'
+- script: dotnet test .\AssetManagement\AssetManagement.csproj --logger trx --filter Category=$(category)
+  displayName: 'Run Tests'
+  continueOnError: true
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    testRunTitle: 'Automation Test'
+  displayName: 'Publish Test Result'
+- task: PublishPipelineArtifact@1
+  inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)\AssetManagement\TestResult\index.html'
+      artifact: 'TestResult'
+      publishLocation: 'pipeline'
+  displayName: 'Publish HTML Report'
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $pathExists = Test-Path -Path "$(System.DefaultWorkingDirectory)/AssetManagement/bin/$(buildConfiguration)/net6.0/Screenshot"
+      Write-Output "$pathExists"
+      Write-Output "##vso[task.setvariable variable=PathExists]$pathExists"
+  displayName: 'Check Screenshots folder exist before publishing'
+- task: PublishPipelineArtifact@1
+  inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/AssetManagement/bin/$(buildConfiguration)/net6.0/Screenshot'
+      artifact: 'Screenshots'
+      publishLocation: 'pipeline'
+  displayName: 'Publish Screenshots folder for failed scenarios if existed'
+  condition: eq(variables['PathExists'], True)
