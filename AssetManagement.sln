@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoNunitFW", "DemoNunitFW.csproj", "{A1AE46B2-8260-43C5-AA1C-14D0A9276EB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetManagement", "AssetManagement.csproj", "{A1AE46B2-8260-43C5-AA1C-14D0A9276EB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

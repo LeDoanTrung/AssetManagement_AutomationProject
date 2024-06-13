@@ -1,3 +1,7 @@
 {
-    "abc":"bcd"
+  "Browser": "Chrome",
+  "Enviroment": "staging",
+  "timeout.webdriver.wait.seconds": 10,
+  "timeout.webdriver.pageLoad.seconds": 120,
+  "timeout.webdriver.asyncJavaScript.seconds": 30
 }
