@@ -1,4 +1,5 @@
 ﻿using AssetManagement.Library;
+using AssetManagement.Library.ReportHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
