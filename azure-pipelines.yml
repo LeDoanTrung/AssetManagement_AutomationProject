@@ -33,13 +33,16 @@ steps:
     packageType: runtime
   displayName: 'Using DotNet runtime'
 
-- script:  dotnet test --logger "junit;LogFilePath=results.xml"
+- script: |
+    dotnet test --logger "junit;LogFilePath=$(Build.ArtifactStagingDirectory)/results.xml"
   displayName: 'Run Tests'
   continueOnError: true
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: 'results.xml'
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/results.xml'
     testRunTitle: 'Automation Test'
   displayName: 'Publish Test Result'
+
 
