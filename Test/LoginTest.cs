@@ -10,7 +10,7 @@ namespace AssetManagement.Test
     {
         private LoginPage _loginPage;
         private HomePage _homePage;
-        private string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "LocalURL");
+        private string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
 
         [SetUp]
         public void PageSetUp()
