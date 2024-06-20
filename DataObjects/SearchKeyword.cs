@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Test
+namespace AssetManagement.DataObjects
 {
-    public class TestLogin : BaseTest
+    public class SearchKeyword
     {
+        public string keyword { get; set; }
     }
 }

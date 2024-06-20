@@ -1,5 +1,9 @@
-﻿using AssetManagement.Library;
+﻿using AssetManagement.Constants;
+using AssetManagement.DataObjects;
+using AssetManagement.Extenstions;
+using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
+using AssetManagement.Library.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +12,16 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.Test
 {
+    [TestFixture]
     public abstract class BaseTest
     {
+        protected Dictionary<string, Account> AccountData;
+
+        public BaseTest()
+        {
+            AccountData = JsonHelper.ReadAndParse<Dictionary<string, Account>>(FileConstant.AccountFilePath.GetAbsolutePath());
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -21,6 +33,21 @@ namespace AssetManagement.Test
             string date = DateTime.Now.ToString("ddMMMyyyy_HHmmss");
             string functionName = TestContext.CurrentContext.Test.MethodName;
 
+            //Create folder structure
+            string functionTestDirectory = CreateFolderStructure(date, functionName);
+
+            //Initialize report
+            string reportPath = Path.Combine(functionTestDirectory, "result.html");
+            InitializeReport(reportPath, "DemoQA", enviroment, browser);
+
+            //Initialize WebDriver
+            InitializeWebDriver(browser, timeOutSec, pageLoadTime, asyncJsTime);
+
+            Console.WriteLine("Base Test Set up");
+        }
+
+        private string CreateFolderStructure(string date, string functionName)
+        {
             //Create folder "TestResults"
             string projectDirectory = Directory.GetCurrentDirectory();
             string testResultsDirectory = Path.Combine(projectDirectory, "TestResults");
@@ -37,21 +64,24 @@ namespace AssetManagement.Test
             string functionTestDirectory = Path.Combine(classTestDirectory, $"Result_{date}_{functionName}");
             Directory.CreateDirectory(functionTestDirectory);
 
+            return functionTestDirectory;
+        }
 
-            string reportPath = Path.Combine(functionTestDirectory, "result.html");
-
-            ExtentReportHelper.InitializeReport(reportPath, "DemoQA", enviroment, browser);
+        private void InitializeReport(string reportPath, string systemName, string environment, string browser)
+        {
+            ExtentReportHelper.InitializeReport(reportPath, systemName, environment, browser);
             ExtentReportHelper.CreateTest(TestContext.CurrentContext.Test.ClassName);
             ExtentReportHelper.CreateNode(TestContext.CurrentContext.Test.Name);
             ExtentReportHelper.LogTestStep("Initialize webdriver");
+        }
 
+        private void InitializeWebDriver(string browser, double timeOutSec, string pageLoadTime, string asyncJsTime)
+        {
             BrowserFactory.InitDriver(browser);
             BrowserFactory.WebDriver.Manage().Window.Maximize();
-            BrowserFactory.WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(timeOutSec); // Implicit wait
+            BrowserFactory.WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(timeOutSec);
             BrowserFactory.WebDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(double.Parse(pageLoadTime));
             BrowserFactory.WebDriver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(double.Parse(asyncJsTime));
-
-            Console.WriteLine("Base Test Set up");
         }
 
         [TearDown]

@@ -52,8 +52,7 @@ namespace AssetManagement.Library
         public void ClickOnElement()
         {
             IWebElement element = WaitForElementToBeClickable();
-            ScrollHelper.ScrollToElement(BrowserFactory.WebDriver, this);
-            ((IJavaScriptExecutor)BrowserFactory.WebDriver).ExecuteScript("arguments[0].click();", element);
+            element.Click();
         }
 
         public void ClearText()
@@ -117,7 +116,6 @@ namespace AssetManagement.Library
                 return null;
             }
         }
-
 
         public bool IsElementExist()
         {

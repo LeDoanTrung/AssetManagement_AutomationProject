@@ -1,32 +1,30 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 
 namespace AssetManagement.Library.Utils
 {
     public static class JsonHelper
     {
-        public static IEnumerable<object[]> GetTestData(string jsonFile, string propertyName)
+        public static string ReadJsonFile(string path)
         {
-            var path = Path.IsPathRooted(jsonFile)
-                ? jsonFile
-                : Path.GetRelativePath(Directory.GetCurrentDirectory(), jsonFile);
+            string currentDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            path = Path.Combine(currentDirectoryPath, path);
 
             if (!File.Exists(path))
             {
-                throw new ArgumentException($"Could not find file at path: {path}");
+                throw new Exception("Can't find file: " + path);
             }
 
-            var fileData = File.ReadAllText(jsonFile);
+            return File.ReadAllText(path);
+        }
 
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return JsonConvert.DeserializeObject<List<object[]>>(fileData);
-            }
-
-            var allData = JObject.Parse(fileData);
-            var data = allData[propertyName];
-            return data.ToObject<List<object[]>>();
+        public static T ReadAndParse<T>(string path) where T : class
+        {
+            var jsonContent = ReadJsonFile(path);
+            return JsonConvert.DeserializeObject<T>(jsonContent);
         }
     }
 }

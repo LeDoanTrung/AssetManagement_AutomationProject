@@ -1,4 +1,5 @@
 ﻿using AssetManagement.Library;
+using FluentAssertions;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -10,22 +11,13 @@ namespace AssetManagement.Pages
 {
     public abstract class BasePage
     {
-        protected Element DynamicElement(string locator, string param)
+        //Web Element
+        protected Element userName_value = new Element(By.Id("username"));
+        protected Element DynamicElement(string locator, params string[] parameters)
         {
-            string formattedLocator = String.Format(locator, param);
+            string formattedLocator = String.Format(locator, parameters);
             Element element = new Element(By.XPath(formattedLocator));
             return element;
-        }
-
-        protected Element DynamicElement(string locator, string param1, string param2)
-        {
-            string formattedLocator = String.Format(locator, param1, param2);
-            Element element = new Element(By.XPath(formattedLocator));
-            return element;
-        }
-        protected void SelectElementWithDynamicLocator(string locator, string param)
-        {
-            DynamicElement(locator, param).ClickOnElement();
         }
 
         protected void SelectElementWithDynamicLocator(string locator, string param1, string param2)
@@ -38,5 +30,6 @@ namespace AssetManagement.Pages
             return DynamicElement(locator, param).GetText();
         }
 
+        
     }
 }
