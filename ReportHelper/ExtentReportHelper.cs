@@ -63,7 +63,6 @@ namespace DemoNunitFW.Report
                     logstatus = Status.Fail;
                     var fileLocation = CaptureScreenshot(driver, className, testName);
                     var mediaEntity = CaptureScreenShotAndAttachToExtendReport(driver, testName);
-                    //Node.Fail("#Test Name: " + testName + " #Status: " + logstatus + stacktrace, mediaEntity);
                     Node.Fail("#Test Name: " + testName + " #Status: " + logstatus + stacktrace);
                     Node.Fail("#Screenshot Below: " + Node.AddScreenCaptureFromPath(fileLocation));
                     break;

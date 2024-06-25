@@ -8,33 +8,33 @@ namespace AssetManagement.Pages
     public class LoginPage 
     {
         //Web ELements
-        private Element userNameInput = new Element(By.Id("username"));
-        private Element passwordInput = new Element(By.Id("password"));
-        private Element loginBtn = new Element(By.XPath("//button[text()='Login']"));
+        private Element _userNameInput = new Element(By.Id("username"));
+        private Element _passwordInput = new Element(By.Id("password"));
+        private Element _loginBtn = new Element(By.XPath("//button[text()='Login']"));
 
 
         //Page Method
         public void InputUserName(string username)
         {
-            userNameInput.ClearText();
-            userNameInput.InputText(username);
+            _userNameInput.ClearText();
+            _userNameInput.InputText(username);
         }
 
         public void InputPassword(string password)
         {
-            passwordInput.ClearText();
-            passwordInput.InputText(password);
+            _passwordInput.ClearText();
+            _passwordInput.InputText(password);
         }
 
         public void ClickOnLoginBtn()
         {
-            loginBtn.ClickOnElement();
+            _loginBtn.ClickOnElement();
         }
 
         public void Login(Account account)
         {
-            InputUserName(account.userName);
-            InputPassword(account.password);
+            InputUserName(account.UserName);
+            InputPassword(account.Password);
             ClickOnLoginBtn();
         }
 

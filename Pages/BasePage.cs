@@ -1,11 +1,6 @@
 ﻿using AssetManagement.Library;
-using FluentAssertions;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AssetManagement.Pages
 {
@@ -13,6 +8,9 @@ namespace AssetManagement.Pages
     {
         //Web Element
         protected Element userName_value = new Element(By.Id("username"));
+
+
+        //Method
         protected Element DynamicElement(string locator, params string[] parameters)
         {
             string formattedLocator = String.Format(locator, parameters);
@@ -20,16 +18,19 @@ namespace AssetManagement.Pages
             return element;
         }
 
-        protected void SelectElementWithDynamicLocator(string locator, string param1, string param2)
+        protected void SelectElementWithDynamicLocator(string locator, params string[] parameters)
         {
-            DynamicElement(locator, param1, param2).ClickOnElement();
+            DynamicElement(locator, parameters).ClickOnElement();
         }
 
-        protected string SelectTextWithDynamicLocator(string locator, string param)
+        protected string SelectTextWithDynamicLocator(string locator, params string[] parameters)
         {
-            return DynamicElement(locator, param).GetText();
+            return DynamicElement(locator, parameters).GetText();
         }
 
-        
+        protected void Wait(int milliseconds)
+        {
+            Task.Delay(milliseconds).Wait();
+        }
     }
 }

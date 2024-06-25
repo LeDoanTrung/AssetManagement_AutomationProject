@@ -4,11 +4,7 @@ using AssetManagement.Extenstions;
 using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Library.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AssetManagement.Test
 {
@@ -16,6 +12,7 @@ namespace AssetManagement.Test
     public abstract class BaseTest
     {
         protected Dictionary<string, Account> AccountData;
+        protected string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
 
         public BaseTest()
         {
@@ -30,41 +27,25 @@ namespace AssetManagement.Test
             double timeOutSec = double.Parse(ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.wait.seconds"));
             string pageLoadTime = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.pageLoad.seconds");
             string asyncJsTime = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.asyncJavaScript.seconds");
-            string date = DateTime.Now.ToString("ddMMMyyyy_HHmmss");
-            string functionName = TestContext.CurrentContext.Test.MethodName;
+            string reportPath = CreateFolderStructure();
 
-            //Create folder structure
-            string functionTestDirectory = CreateFolderStructure(date, functionName);
+            InitializeReport(reportPath, "Asset Management", enviroment, browser);
 
-            //Initialize report
-            string reportPath = Path.Combine(functionTestDirectory, "result.html");
-            InitializeReport(reportPath, "DemoQA", enviroment, browser);
-
-            //Initialize WebDriver
             InitializeWebDriver(browser, timeOutSec, pageLoadTime, asyncJsTime);
 
             Console.WriteLine("Base Test Set up");
         }
 
-        private string CreateFolderStructure(string date, string functionName)
+        private string CreateFolderStructure()
         {
             //Create folder "TestResults"
             string projectDirectory = Directory.GetCurrentDirectory();
             string testResultsDirectory = Path.Combine(projectDirectory, "TestResults");
             Directory.CreateDirectory(testResultsDirectory);
 
-            //Create subfolder by Test Class's name
-            string testClassName = TestContext.CurrentContext.Test.ClassName;
-            string classNameWithoutNamespace = testClassName.Substring(testClassName.LastIndexOf('.') + 1);
-
-            string classTestDirectory = Path.Combine(testResultsDirectory, classNameWithoutNamespace);
-            Directory.CreateDirectory(classTestDirectory);
-
-            //Create subfolder by Test Case's name
-            string functionTestDirectory = Path.Combine(classTestDirectory, $"Result_{date}_{functionName}");
-            Directory.CreateDirectory(functionTestDirectory);
-
-            return functionTestDirectory;
+            // Return the path to the index.html file
+            string reportPath = Path.Combine(testResultsDirectory, "index.html");
+            return reportPath;
         }
 
         private void InitializeReport(string reportPath, string systemName, string environment, string browser)

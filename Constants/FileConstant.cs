@@ -10,5 +10,7 @@ namespace AssetManagement.Constants
     {
         //Test Data
         public const string AccountFilePath = @"TestData\Account.json";
+        public const string UserFilePath = @"TestData\User.json";
+        public const string KeywordFilePath = @"TestData\SearchUserKeyword.json";
     }
 }

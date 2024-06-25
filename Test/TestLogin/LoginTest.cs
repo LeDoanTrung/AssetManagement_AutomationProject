@@ -4,13 +4,12 @@ using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
 
 
-namespace AssetManagement.Test
+namespace AssetManagement.Test.TestLogin
 {
     public class LoginTest : BaseTest
     {
         private LoginPage _loginPage;
         private HomePage _homePage;
-        private string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
 
         [SetUp]
         public void PageSetUp()
@@ -31,8 +30,9 @@ namespace AssetManagement.Test
             _loginPage.Login(valid_user);
 
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
-            _homePage.IsAtHomePage();
+            _homePage.IsAtHomePage(valid_user.UserName);
         }
+
 
     }
 }

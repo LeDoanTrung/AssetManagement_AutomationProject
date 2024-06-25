@@ -1,0 +1,12 @@
+﻿{
+  "admin_user": {
+    "firstName": "Trung",
+    "lastName": "Le",
+    "dateOfBirth": "03/04/1999",
+    "gender": "Male",
+    "joinedDate": "28/06/2024",
+    "type": "Admin",
+    "staffType": "SD",
+    "location": "HCM: Ho Chi Minh"
+  }
+}

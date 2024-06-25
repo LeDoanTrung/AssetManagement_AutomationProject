@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,6 +27,12 @@ namespace AssetManagement.Extenstions
         {
             string path = filePath.GetAbsolutePath();
             return File.ReadAllText(path);
+        }
+
+        public static string ConvertDateFormat(string date, string fromFormat, string toFormat)
+        {
+            DateTime parsedDate = DateTime.ParseExact(date, fromFormat, CultureInfo.InvariantCulture);
+            return parsedDate.ToString(toFormat);
         }
     }
 }

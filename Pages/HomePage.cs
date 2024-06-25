@@ -38,9 +38,9 @@ namespace AssetManagement.Pages
             MenuTab.SelectMenuItem(menuItem);
         }
 
-        public void IsAtHomePage()
+        public void IsAtHomePage(string username)
         {
-            userName_value.IsElementDisplayed().Should().BeTrue();
+            userName_value.GetText().Should().Be(username);
         }
     }
 }

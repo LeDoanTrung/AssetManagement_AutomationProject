@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace AssetManagement.DataObjects
 {
     public class SearchKeyword
     {
-        public string keyword { get; set; }
+        [JsonProperty("keyword")]
+        public string Keyword { get; set; }
     }
 }

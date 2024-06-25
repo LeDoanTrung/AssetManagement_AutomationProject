@@ -52,6 +52,7 @@ namespace AssetManagement.Library
         public void ClickOnElement()
         {
             IWebElement element = WaitForElementToBeClickable();
+            ScrollHelper.ScrollToElement(BrowserFactory.WebDriver, this);
             element.Click();
         }
 
@@ -89,24 +90,11 @@ namespace AssetManagement.Library
             var element = WaitForElementToVisible();
             element.SendKeys(keys);
         }
-        public void SelectOptionByText(string option)
-        {
-            IWebElement element = BrowserFactory.WebDriver.FindElement(this.By);
-            SelectElement select = new SelectElement(element);
-            select.SelectByText(option);
-        }
-
-        public void UploadFile(string filePath)
-        {
-            var element = WaitForElementToVisible();
-            element.SendKeys(filePath);
-        }
 
         public IWebElement GetWebElement(IWebDriver driver)
         {
             try
             {
-
                 return driver.FindElement(By);
             }
             catch (NoSuchElementException ex)
@@ -116,24 +104,17 @@ namespace AssetManagement.Library
                 return null;
             }
         }
-
-        public bool IsElementExist()
+        public void SelectOptionByText(string option)
         {
-            try
-            {
-                IWebElement element = BrowserFactory.WebDriver.FindElement(this.By);
-                return element != null;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            IWebElement element = BrowserFactory.WebDriver.FindElement(this.By);
+            SelectElement select = new SelectElement(element);
+            select.SelectByText(option);
         }
 
         public bool IsDisabled()
         {
             IWebElement element = WaitForElementToVisible();
-            return element.GetAttribute("disabled") != null;
+            return element.GetAttribute("class").Contains("disabled") != null;
         }
     }
 }
