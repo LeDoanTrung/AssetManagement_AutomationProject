@@ -33,5 +33,21 @@ namespace AssetManagement.DataObjects
         [JsonProperty("staffType")]
         public string StaffType { get; set; }
 
+
+        public static User CreateExpectedUser(User createdUser, User edittedUser)
+        {
+            return new User
+            {
+                FirstName = createdUser.FirstName,
+                LastName = createdUser.LastName,
+                DateOfBirth = edittedUser.DateOfBirth,
+                Gender = edittedUser.Gender,
+                JoinedDate = edittedUser.JoinedDate,
+                Type = edittedUser.Type,
+                Location = createdUser.Location,
+                StaffType = createdUser.StaffType
+            };
+        }
+
     }
 }

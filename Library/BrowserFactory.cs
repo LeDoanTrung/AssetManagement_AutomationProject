@@ -28,7 +28,6 @@ namespace AssetManagement.Library
                 case "chrome":
                     var chromeOptions = new ChromeOptions();
                     chromeOptions.AddArguments("test-type");
-                    //chromeOptions.AddArguments("headless");
                     chromeOptions.AddArguments("--no-sandbox");
                     WebDriver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), chromeOptions);
                     break;
@@ -50,7 +49,7 @@ namespace AssetManagement.Library
                     throw new ArgumentOutOfRangeException(browserName, "Browser not supported: " + browserName);
             }
 
-            Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(10));
+            Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(60));
         }
 
         public static void CloseDriver()

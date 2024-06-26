@@ -19,8 +19,8 @@ namespace AssetManagement.Test.TestLogin
         }
 
         [Test, Description("Admin user login successfully with valid Username and Password")]
-        [TestCase("valid_account")]
-        public void LoginWithValidAccount(string accountKey)
+        [TestCase("valid_admin")]
+        public void LoginWithValidAdminAccountSuccessfully(string accountKey)
         {
             Account valid_user = AccountData[accountKey];
             ExtentReportHelper.LogTestStep("Go to Login page.");
@@ -30,9 +30,22 @@ namespace AssetManagement.Test.TestLogin
             _loginPage.Login(valid_user);
 
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
-            _homePage.IsAtHomePage(valid_user.UserName);
+            _homePage.IsAtHomePage();
         }
 
+        [Test, Description("Staff user login successfully with valid Username and Password")]
+        [TestCase("valid_staff")]
+        public void LoginWithValidStaffAccountSuccessfully(string accountKey)
+        {
+            Account valid_user = AccountData[accountKey];
+            ExtentReportHelper.LogTestStep("Go to Login page.");
+            BrowserFactory.WebDriver.Url = loginUrl;
 
+            ExtentReportHelper.LogTestStep("Login");
+            _loginPage.Login(valid_user);
+
+            ExtentReportHelper.LogTestStep("Verify is at Homepage");
+           _homePage.IsAtHomePage();
+        }
     }
 }

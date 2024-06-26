@@ -8,7 +8,7 @@ namespace AssetManagement.Pages
     {
         //Web Element
         protected Element userName_value = new Element(By.Id("username"));
-
+        protected Element navbar_title = new Element(By.Id("navbar-title"));
 
         //Method
         protected Element DynamicElement(string locator, params string[] parameters)
@@ -31,6 +31,31 @@ namespace AssetManagement.Pages
         protected void Wait(int milliseconds)
         {
             Task.Delay(milliseconds).Wait();
+        }
+
+        public void NavigateToManageUserPage(string menuItem = "Manage User")
+        {
+            MenuTab.SelectMenuItem(menuItem);
+        }
+
+        public void NavigateToMangeAssetPage(string menuItem = "Manage Asset")
+        {
+            MenuTab.SelectMenuItem(menuItem);
+        }
+
+        public void NavigateToMangeAssignmentPage(string menuItem = "Manage Assignment")
+        {
+            MenuTab.SelectMenuItem(menuItem);
+        }
+
+        public void NavigateToRequestReturningPage(string menuItem = "Request for Returning")
+        {
+            MenuTab.SelectMenuItem(menuItem);
+        }
+
+        public void NavigateToReportPage(string menuItem = "Report")
+        {
+            MenuTab.SelectMenuItem(menuItem);
         }
     }
 }

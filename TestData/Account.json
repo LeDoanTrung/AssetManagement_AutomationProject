@@ -1,6 +1,10 @@
 ﻿{
-  "valid_account": {
+  "valid_admin": {
     "userName": "trungt",
+    "password": "Trung1999@"
+  },
+  "valid_staff": {
+    "userName": "let",
     "password": "Trung1999@"
   }
 }

@@ -116,5 +116,16 @@ namespace AssetManagement.Library
             IWebElement element = WaitForElementToVisible();
             return element.GetAttribute("class").Contains("disabled") != null;
         }
+
+        public string GetTextWithWait()
+        {
+            return WaitForElementToVisible().Text;
+        }
+        public Element FindElement(By by)
+        {
+            var parentElement = WaitForElementToVisible();
+            parentElement.FindElement(by); 
+            return new Element(by);
+        }
     }
 }

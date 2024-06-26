@@ -4,6 +4,7 @@ using FluentAssertions;
 using AssetManagement.Extenstions;
 using OpenQA.Selenium;
 using System.Reflection.Metadata.Ecma335;
+using AssetManagement.Library.ShareData;
 
 
 namespace AssetManagement.Pages
@@ -13,98 +14,34 @@ namespace AssetManagement.Pages
         //Web Element
         private Element _createUserBtn = new Element(By.XPath("//button[text()='Create New User']"));
         private Element _searchBar = new Element(By.Id("search-input"));
-        private Element _searchIcon = new Element(By.Id("search-button"));
-        private Element _firstNameTextBox = new Element(By.Id("firstName"));
-        private Element _lastNameTextBox = new Element(By.Id("lastName"));
-        private Element _dateOfBirth = new Element(By.Id("dateOfBirth"));
-        private Element _joinedDate = new Element(By.Id("joinedDate"));
-        private string _genderLocator = "//label[text()='{0}']";
-        private Element _typeDropdown = new Element(By.Id("roleId"));
-        private Element _staffTypeDropdown = new Element(By.Id("type"));
-        public Element _locationDropdown = new Element(By.Id("location"));
-        private Element _saveButton = new Element(By.XPath("//button[text()='Save']"));
-        private Element _firstUserRecord = new Element(By.CssSelector("tbody tr:first-child"));
-        private string _headerLocator = "table th";
-        private string _tableRow = "tbody tr";
-        private string _cellLocator = "tbody td";
+        private Element _searchIcon = new Element(By.Id("search-button")); 
+        private Element _firstUserRecord = new Element(By.CssSelector("table#table tbody tr:first-child"));       
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No User Found']"));
-        private string _modalFieldTitle = "//div[@class='col-sm-4']/div";
-        private string _modalValue = "//div[@class='col']/div";
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
+        private Element _disableButtonModal = new Element(By.XPath("//button[.='Disable']"));
 
+        private string _modalFieldTitle = "//div[contains(@class,'modal-field')]";
+        private string _modalValue = "//div[contains(@class,'modal-value')]";
+        private string _headerLocator = "#table-header th";
+        private string _tableRow = "#table tbody tr";
+        private string _cellLocator = "#table tbody td";
+        private string _userRowLocator = "//td[.='{0}']/..";
+        private string _disableIconLocator = "svg[data-icon='circle-xmark']";
+        private string _editIconLocator = "svg[data-icon='pencil']";
 
         //Method
-        public void ClikcOnCreateUserBtn()
+        public void GoToCreateUserPage()
         {
             _createUserBtn.ClickOnElement();
         }
-
-        public void InputFirstName(string firstName)
+        public void GoToEditUser()
         {
-            _firstNameTextBox.ClearText();
-            _firstNameTextBox.InputText(firstName);
+            string staffCode = GetStaffCodeOfCreatedUser();
+            Element userRow = this.DynamicElement(_userRowLocator, staffCode);
+            var editIcon = userRow.FindElement(By.CssSelector(_editIconLocator));
+            editIcon.ClickOnElement();
         }
-
-        public void InputLastName(string lastName) 
-        {
-            _lastNameTextBox.ClearText();
-            _lastNameTextBox.InputText(lastName);
-        }
-
-        public void InputDateOfBirth(string date)
-        {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
-            _dateOfBirth.SendKeys(formattedDate);
-        }
-        public void InputJoinedDate(string date) 
-        {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
-            _joinedDate.SendKeys(formattedDate);
-        }
-
-        public void SelectGender(string gender)
-        {
-            Element genderValue = this.DynamicElement(_genderLocator, gender);
-            genderValue.ClickOnElement();
-        }
-
-        public void SelectType(string type)
-        {
-            _typeDropdown.SelectOptionByText(type);
-        }
-
-        public void SelectStaffType(string staffType)
-        {
-            _staffTypeDropdown.SelectOptionByText(staffType);
-        }
-
-        public void SelectLocation(string location)
-        {
-            _locationDropdown.SelectOptionByText(location);
-        }
-        public void ClickOnSaveBtn()
-        {
-            _saveButton.IsElementEnabled();
-            _saveButton.ClickOnElement();
-        }
-        public void CreateNewUser(User user)
-        {
-            ClikcOnCreateUserBtn();
-            InputFirstName(user.FirstName);
-            InputLastName(user.LastName);
-            InputDateOfBirth(user.DateOfBirth);
-            SelectGender(user.Gender);
-            InputJoinedDate(user.JoinedDate);
-            SelectType(user.Type);
-            SelectStaffType(user.StaffType);
-            if (user.Type.Equals("Admin"))
-            {
-                SelectLocation(user.Location);
-            }
-            ClickOnSaveBtn();
-        }
-
         public void EnterSearchKeyword(string keyword)
         {
             _searchBar.ClearText();
@@ -145,11 +82,19 @@ namespace AssetManagement.Pages
 
             return -1;
         }
-        
-        public void VerifyCreateUserSuccessfully(User user)
+
+        public void OpenDetailFirstRecort()
         {
             _firstUserRecord.ClickOnElement();
+        }
 
+        public void CloseModal()
+        {
+            _closeModalIcon.ClickOnElement();
+        }
+
+        public void VerifyUser(User user)
+        {
             int staffCodeIndex = FindIndexOfTitleModal("Staff Code");
             int fullNameIndex = FindIndexOfTitleModal("Full Name");
             int dateOfBirthIndex = FindIndexOfTitleModal("Date of Birth");
@@ -158,7 +103,7 @@ namespace AssetManagement.Pages
             int typeIndex = FindIndexOfTitleModal("Type");
             int locationIndex = FindIndexOfTitleModal("Location");
 
-            if (staffCodeIndex == -1 || fullNameIndex == -1 || dateOfBirthIndex == -1 || genderIndex == -1 || 
+            if (staffCodeIndex == -1 || fullNameIndex == -1 || dateOfBirthIndex == -1 || genderIndex == -1 ||
                 joinedDateIndex == -1 || typeIndex == -1 || locationIndex == -1)
             {
                 throw new Exception("One or more field of modal not found.");
@@ -183,7 +128,13 @@ namespace AssetManagement.Pages
             location.Should().Be(user.Location.Split(':')[0].Trim(), "Location does not match.");
         }
 
-        public bool VerifySearchUserWithAssociatedResultSuccessfully(string keyword)
+        public void VerifyUserInformation(User user)
+        {
+            OpenDetailFirstRecort();
+            VerifyUser(user);
+        }
+
+        public bool VerifySearchUserWithAssociatedResult(string keyword)
         {
             Wait(2000);
             int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
@@ -234,9 +185,7 @@ namespace AssetManagement.Pages
             {
                 return true;
             }
-
             return allRowsContainKeyword;
-
         }
 
         private bool IsKeywordInText(string keyword, string text)
@@ -244,6 +193,42 @@ namespace AssetManagement.Pages
             return !string.IsNullOrWhiteSpace(text) && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
         }
 
+        public void DisableUser(string staffCode)
+        {
+            Element userRow = this.DynamicElement(_userRowLocator, staffCode);
+            var disableIcon = userRow.FindElement(By.CssSelector(_disableIconLocator));
+            disableIcon.ClickOnElement();
+            ClickOnDisableBtn();
+        }
 
+        public void ClickOnDisableBtn()
+        {
+            _disableButtonModal.ClickOnElement();
+        }
+
+        public string GetStaffCodeOfCreatedUser()
+        {
+            int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
+            var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
+            string staffCode = cells.ElementAt(staffCodeIndex).Text;
+            return staffCode;
+        }
+        public void StoreDataToDisable()
+        {
+            string staffCode = GetStaffCodeOfCreatedUser();
+
+            DataStorage.SetData("hasCreatedUser", true);
+            DataStorage.SetData("staffCode", staffCode);
+        }
+
+        public void DeleteCreatedUserFromStorage()
+        {
+            if ((Boolean)DataStorage.GetData("hasCreatedUser"))
+            {
+                this.DisableUser(
+                (string)DataStorage.GetData("staffCode")
+                );
+            }
+        }
     }
 }

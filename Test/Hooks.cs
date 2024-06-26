@@ -1,4 +1,5 @@
 ﻿using AssetManagement.Library;
+using AssetManagement.Library.ShareData;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace AssetManagement.Test
 
             // Read Configuration file
             Config = ConfigurationHelper.ReadConfiguration(AppSettingPath);
+            DataStorage.InitData();
         }
     }
 }
