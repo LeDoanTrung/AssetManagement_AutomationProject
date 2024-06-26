@@ -1,10 +1,7 @@
-﻿using AssetManagement.Constants;
-using AssetManagement.DataObjects;
+﻿using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
-using AssetManagement.Extenstions;
 using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
-using AssetManagement.Library.Utils;
 using AssetManagement.Pages;
 
 
@@ -34,7 +31,7 @@ namespace AssetManagement.Test.TestSearchUser
             User createdUser = UserDataProvider.CreateRandomValidUser();
 
             ExtentReportHelper.LogTestStep("Go to Login page.");
-            BrowserFactory.WebDriver.Url = loginUrl;
+            BrowserFactory.WebDriver.Url = loginUrl; 
 
             ExtentReportHelper.LogTestStep("Login");
             _loginPage.Login(valid_user);

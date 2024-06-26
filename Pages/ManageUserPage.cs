@@ -136,7 +136,6 @@ namespace AssetManagement.Pages
 
         public bool VerifySearchUserWithAssociatedResult(string keyword)
         {
-            Wait(2000);
             int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
             int fullNameIndex = FindIndexOfHeaderColumn("Full Name");
             int usernameIndex = FindIndexOfHeaderColumn("Username");
