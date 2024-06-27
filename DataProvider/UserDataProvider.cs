@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AssetManagement.DataProvider
@@ -38,8 +39,9 @@ namespace AssetManagement.DataProvider
 
             string staffType = isSDStaffType ? "SD" : "BPS";
 
-            string firstName = faker.Name.FirstName();
-            string lastName = faker.Name.LastName();
+            string firstName = GetValidName(faker.Name.FirstName());
+            string lastName = GetValidName(faker.Name.LastName());
+
 
             var user = new User
             {
@@ -54,6 +56,11 @@ namespace AssetManagement.DataProvider
             };
 
             return user;
+        }
+
+        private static string GetValidName(string name)
+        {
+            return Regex.Replace(name, "[^a-zA-Z]", "");
         }
     }
 }
