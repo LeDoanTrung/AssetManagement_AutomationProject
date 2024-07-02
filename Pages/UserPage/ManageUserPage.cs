@@ -48,7 +48,7 @@ namespace AssetManagement.Pages.UserPage
         {
             _searchBar.ClearText();
             _searchBar.InputText(keyword);
-            _searchIcon.ClickOnElement();
+            _searchBar.SendKeys(Keys.Enter);
         }
 
 
