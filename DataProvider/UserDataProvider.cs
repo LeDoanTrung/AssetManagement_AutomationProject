@@ -17,31 +17,14 @@ namespace AssetManagement.DataProvider
         {
             var faker = new Faker();
 
-            DateTime today = DateTime.Today;
-            DateTime startDate = today.AddYears(-18).AddDays(-1);
-            DateTime endDate = today.AddYears(-100);
-            DateTime dateOfBirth = faker.Date.Between(startDate, endDate);
-
-            DateTime joinedDate = faker.Date.Between(dateOfBirth, today);
-
-            // Ensure joinedDate is not Saturday or Sunday
-            while (joinedDate.DayOfWeek == DayOfWeek.Saturday || joinedDate.DayOfWeek == DayOfWeek.Sunday)
-            {
-                joinedDate = faker.Date.Between(dateOfBirth, today);
-            }
-
-            string[] genders = { "Male", "Female" };
-            string gender = genders[Random.Next(genders.Length)];
-
-            string type = isAdmin ? "Admin" : "Staff";
-
-            string location = isAdmin ? adminLocation : "HCM: Ho Chi Minh";
-
-            string staffType = isSDStaffType ? "SD" : "BPS";
-
+            DateTime dateOfBirth = GenerateDateOfBirth();
+            DateTime joinedDate = GenerateJoinedDate(dateOfBirth);
+            string gender = GenerateGender();
+            string type = GenerateType(isAdmin);
+            string location = GenerateLocation(isAdmin, adminLocation);
+            string staffType = GenerateStaffType(isSDStaffType);
             string firstName = GetValidName(faker.Name.FirstName());
             string lastName = GetValidName(faker.Name.LastName());
-
 
             var user = new User
             {
@@ -56,6 +39,48 @@ namespace AssetManagement.DataProvider
             };
 
             return user;
+        }
+
+        private static DateTime GenerateDateOfBirth()
+        {
+            var faker = new Faker();
+            DateTime today = DateTime.Today;
+            DateTime startDate = today.AddYears(-18).AddDays(-1);
+            DateTime endDate = today.AddYears(-100);
+            return faker.Date.Between(startDate, endDate);
+        }
+
+        private static DateTime GenerateJoinedDate(DateTime dateOfBirth)
+        {
+            var faker = new Faker();
+            DateTime today = DateTime.Today;
+            DateTime joinedDate = faker.Date.Between(dateOfBirth, today);
+
+            // Ensure joinedDate is not Saturday or Sunday
+            while (joinedDate.DayOfWeek == DayOfWeek.Saturday || joinedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                joinedDate = faker.Date.Between(dateOfBirth, today);
+            }
+
+            return joinedDate;
+        }
+        private static string GenerateGender()
+        {
+            string[] genders = { "Male", "Female" };
+            return genders[Random.Next(genders.Length)];
+        }
+        private static string GenerateType(bool isAdmin)
+        {
+            return isAdmin ? "Admin" : "Staff";
+        }
+
+        private static string GenerateLocation(bool isAdmin, string adminLocation)
+        {
+            return isAdmin ? adminLocation : "HCM: Ho Chi Minh";
+        }
+        private static string GenerateStaffType(bool isSDStaffType)
+        {
+            return isSDStaffType ? "SD" : "BPS";
         }
 
         private static string GetValidName(string name)
