@@ -1,19 +1,23 @@
 ﻿using AssetManagement.Library;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AssetManagement.Pages
 {
-    public static class MenuTab
+    public class MenuTab
     {
-        public static void SelectMenuItem(string itemName)
+        private Element _menuItem(string itemName)
         {
-            Element menuItem = new Element(By.XPath($"//li[.='{itemName}']"));
-            menuItem.ClickOnElement();
+            return new Element(By.XPath($"//li[.='{itemName}']"));
+        } 
+
+        public void SelectMenuItem(string itemName)
+        {
+            _menuItem(itemName).ClickOnElement();
+        }
+
+        public Element GetMenuItem(string itemName)
+        {
+            return _menuItem(itemName);
         }
     }
 }

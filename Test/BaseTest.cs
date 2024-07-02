@@ -4,6 +4,7 @@ using AssetManagement.Extenstions;
 using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Library.Utils;
+using AssetManagement.Pages;
 
 
 namespace AssetManagement.Test
@@ -13,10 +14,11 @@ namespace AssetManagement.Test
     {
         protected Dictionary<string, Account> AccountData;
         protected string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
-
+        protected LoginPage _loginPage;
         public BaseTest()
         {
             AccountData = JsonHelper.ReadAndParse<Dictionary<string, Account>>(FileConstant.AccountFilePath.GetAbsolutePath());
+            _loginPage = new LoginPage();
         }
 
         [SetUp]
@@ -32,6 +34,8 @@ namespace AssetManagement.Test
             InitializeReport(reportPath, "Asset Management", enviroment, browser);
 
             InitializeWebDriver(browser, timeOutSec, pageLoadTime, asyncJsTime);
+
+            GoToLoginPage();
 
             Console.WriteLine("Base Test Set up");
         }
@@ -63,6 +67,12 @@ namespace AssetManagement.Test
             BrowserFactory.WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(timeOutSec);
             BrowserFactory.WebDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(double.Parse(pageLoadTime));
             BrowserFactory.WebDriver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(double.Parse(asyncJsTime));
+        }
+
+        public void GoToLoginPage()
+        {
+            ExtentReportHelper.LogTestStep("Go to Login page.");
+            BrowserFactory.WebDriver.Url = loginUrl;
         }
 
         [TearDown]

@@ -1,47 +1,49 @@
 ﻿using AssetManagement.DataObjects;
 using AssetManagement.Library;
 using FluentAssertions;
-using AssetManagement.Extenstions;
 using OpenQA.Selenium;
-using System.Reflection.Metadata.Ecma335;
 using AssetManagement.Library.ShareData;
 
 
-namespace AssetManagement.Pages
+namespace AssetManagement.Pages.UserPage
 {
     public class ManageUserPage : BasePage
     {
         //Web Element
         private Element _createUserBtn = new Element(By.XPath("//button[text()='Create New User']"));
         private Element _searchBar = new Element(By.Id("search-input"));
-        private Element _searchIcon = new Element(By.Id("search-button")); 
-        private Element _firstUserRecord = new Element(By.CssSelector("table#table tbody tr:first-child"));       
+        private Element _searchIcon = new Element(By.Id("search-button"));
+        private Element _firstUserRecord = new Element(By.CssSelector("#table tbody tr:first-child"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No User Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
         private Element _disableButtonModal = new Element(By.XPath("//button[.='Disable']"));
-
         private string _modalFieldTitle = "//div[contains(@class,'modal-field')]";
         private string _modalValue = "//div[contains(@class,'modal-value')]";
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";
-        private string _userRowLocator = "//td[.='{0}']/..";
         private string _disableIconLocator = "svg[data-icon='circle-xmark']";
         private string _editIconLocator = "svg[data-icon='pencil']";
+        private Element _userRow(string staffCode)
+        {
+            return new Element(By.XPath($"//td[.='{staffCode}']/.."));
+        }
 
         //Method
-        public void GoToCreateUserPage()
+        public CreateNewUserPage GoToCreateUserPage()
         {
             _createUserBtn.ClickOnElement();
+            return new CreateNewUserPage();
         }
-        public void GoToEditUser()
+        public EditUserPage GoToEditUser()
         {
             string staffCode = GetStaffCodeOfCreatedUser();
-            Element userRow = this.DynamicElement(_userRowLocator, staffCode);
-            var editIcon = userRow.FindElement(By.CssSelector(_editIconLocator));
+            var editIcon = _userRow(staffCode).FindElement(By.CssSelector(_editIconLocator));
             editIcon.ClickOnElement();
+            return new EditUserPage();
         }
+
         public void EnterSearchKeyword(string keyword)
         {
             _searchBar.ClearText();
@@ -50,7 +52,7 @@ namespace AssetManagement.Pages
         }
 
 
-       public int FindIndexOfHeaderColumn(string headerName)
+        public int FindIndexOfHeaderColumn(string headerName)
         {
             // Get all column header elements
             var headerElements = BrowserFactory.WebDriver.FindElements(By.CssSelector(_headerLocator));
@@ -93,8 +95,9 @@ namespace AssetManagement.Pages
             _closeModalIcon.ClickOnElement();
         }
 
-        public void VerifyUser(User user)
+        public void VerifyCreatedUser(User user)
         {
+            Wait(1000);
             int staffCodeIndex = FindIndexOfTitleModal("Staff Code");
             int fullNameIndex = FindIndexOfTitleModal("Full Name");
             int dateOfBirthIndex = FindIndexOfTitleModal("Date of Birth");
@@ -131,11 +134,12 @@ namespace AssetManagement.Pages
         public void VerifyUserInformation(User user)
         {
             OpenDetailFirstRecort();
-            VerifyUser(user);
+            VerifyCreatedUser(user);
         }
 
         public bool VerifySearchUserWithAssociatedResult(string keyword)
         {
+            Wait(1000);
             int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
             int fullNameIndex = FindIndexOfHeaderColumn("Full Name");
             int usernameIndex = FindIndexOfHeaderColumn("Username");
@@ -177,13 +181,9 @@ namespace AssetManagement.Pages
 
             if (allRowsContainKeyword)
             {
-                return true; 
-            }
-
-            if (_noRowsFoundMessage.IsElementDisplayed()) 
-            {
                 return true;
             }
+
             return allRowsContainKeyword;
         }
 
@@ -194,14 +194,8 @@ namespace AssetManagement.Pages
 
         public void DisableUser(string staffCode)
         {
-            Element userRow = this.DynamicElement(_userRowLocator, staffCode);
-            var disableIcon = userRow.FindElement(By.CssSelector(_disableIconLocator));
+            var disableIcon = _userRow(staffCode).FindElement(By.CssSelector(_disableIconLocator));
             disableIcon.ClickOnElement();
-            ClickOnDisableBtn();
-        }
-
-        public void ClickOnDisableBtn()
-        {
             _disableButtonModal.ClickOnElement();
         }
 
@@ -222,9 +216,9 @@ namespace AssetManagement.Pages
 
         public void DeleteCreatedUserFromStorage()
         {
-            if ((Boolean)DataStorage.GetData("hasCreatedUser"))
+            if ((bool)DataStorage.GetData("hasCreatedUser"))
             {
-                this.DisableUser(
+                DisableUser(
                 (string)DataStorage.GetData("staffCode")
                 );
             }

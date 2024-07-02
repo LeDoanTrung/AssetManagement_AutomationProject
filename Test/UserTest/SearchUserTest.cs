@@ -3,25 +3,14 @@ using AssetManagement.DataProvider;
 using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
+using AssetManagement.Pages.UserPage;
 
 
-namespace AssetManagement.Test.TestSearchUser
+namespace AssetManagement.Test.UserTest
 {
     public class SearchUserTest : BaseTest
     {
-        private LoginPage _loginPage;
-        private HomePage _homePage;
         private ManageUserPage _manageUserPage;
-        private CreateNewUserPage _createNewUserPage;
-
-        [SetUp]
-        public void PageSetUp()
-        {
-            _loginPage = new LoginPage();
-            _homePage = new HomePage();
-            _manageUserPage = new ManageUserPage();
-            _createNewUserPage = new CreateNewUserPage();
-        }
 
         [Test, Description("Search user by name")]
         [TestCase("valid_admin")]
@@ -30,20 +19,17 @@ namespace AssetManagement.Test.TestSearchUser
             Account valid_user = AccountData[accountKey];
             User createdUser = UserDataProvider.CreateRandomValidUser();
 
-            ExtentReportHelper.LogTestStep("Go to Login page.");
-            BrowserFactory.WebDriver.Url = loginUrl; 
-
             ExtentReportHelper.LogTestStep("Login");
-            _loginPage.Login(valid_user);
+            HomePage _homePage = _loginPage.Login(valid_user);
 
             ExtentReportHelper.LogTestStep("Go to Manage User page");
-            _homePage.NavigateToManageUserPage();
+            _manageUserPage = _homePage.NavigateToManageUserPage();
 
             ExtentReportHelper.LogTestStep("Create new user for searching");
-            _manageUserPage.GoToCreateUserPage();
+            CreateNewUserPage _createNewUserPage = _manageUserPage.GoToCreateUserPage();
             _createNewUserPage.CreateNewUser(createdUser);
 
-            ExtentReportHelper.LogTestStep("Search User by name");
+            ExtentReportHelper.LogTestStep("Search user by name");
             _manageUserPage.EnterSearchKeyword(createdUser.FirstName);
 
             ExtentReportHelper.LogTestStep("Verify search result");

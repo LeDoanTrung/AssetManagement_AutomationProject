@@ -62,6 +62,14 @@ namespace AssetManagement.Library
             element.Clear();
         }
 
+        public void ClearTextFromTextArea()
+        {
+            var element = WaitForElementToVisible();
+            //element.Clear();
+            element.SendKeys(Keys.Control + "a");
+            element.SendKeys(Keys.Delete);
+        }
+
         public void InputText(string text)
         {
             var element = WaitForElementToVisible();
@@ -116,16 +124,24 @@ namespace AssetManagement.Library
             IWebElement element = WaitForElementToVisible();
             return element.GetAttribute("class").Contains("disabled") != null;
         }
-
-        public string GetTextWithWait()
-        {
-            return WaitForElementToVisible().Text;
-        }
         public Element FindElement(By by)
         {
             var parentElement = WaitForElementToVisible();
             parentElement.FindElement(by); 
             return new Element(by);
+        }
+
+        public bool IsElementExist()
+        {
+            try
+            {
+                IWebElement element = BrowserFactory.WebDriver.FindElement(this.By);
+                return element != null;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
     }
 }

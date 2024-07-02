@@ -31,11 +31,13 @@ namespace AssetManagement.Pages
             _loginBtn.ClickOnElement();
         }
 
-        public void Login(Account account)
+        public HomePage Login(Account account)
         {
             InputUserName(account.UserName);
             InputPassword(account.Password);
             ClickOnLoginBtn();
+
+            return new HomePage();
         }
 
 
