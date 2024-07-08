@@ -1,10 +1,14 @@
 ﻿{
   "valid_admin": {
     "userName": "trungt",
-    "password": "Trung1999@"
+    "password": "Trung1999@",
+    "fullName": "Trung Trung",
+    "staffCode": "SD0009"
   },
   "valid_staff": {
     "userName": "let",
-    "password": "Trung1999@"
+    "password": "Trung1999@",
+    "fullName": "Le Trung",
+    "staffCode": "SD0010"
   }
 }

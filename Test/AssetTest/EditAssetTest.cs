@@ -1,4 +1,5 @@
-﻿using AssetManagement.DataObjects;
+﻿using AssetManagement.Constants;
+using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
@@ -12,14 +13,21 @@ namespace AssetManagement.Test.AssetTest
     public class EditAssetTest : BaseTest
     {
         private ManageAssetPage _manageAssetPage;
+        private Asset beforeEditAsset;
+        private Asset afterEditAsset;
+
+        [SetUp]
+        public void BeforeDeleteAssetTest()
+        {
+            beforeEditAsset = AssetDataProvider.CreateRandomValidAsset();
+            afterEditAsset = AssetDataProvider.CreateRandomValidAssetForEditting();
+        }
 
         [Test, Description("Edit asset successfully")]
         [TestCase("valid_admin")]
         public void EditAssetWithValidDataSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
-            Asset beforeEditAsset = AssetDataProvider.CreateRandomValidAsset();
-            Asset afterEditAsset = AssetDataProvider.CreateRandomValidAssetForEditting();
+            Account valid_user = AccountData.GetAccount(accountKey);
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
@@ -32,11 +40,13 @@ namespace AssetManagement.Test.AssetTest
             _createNewAssetPage.CreateNewAsset(beforeEditAsset);
 
             ExtentReportHelper.LogTestStep("Edit the created asset");
-            EditAssetPage _editAssetPage = _manageAssetPage.GoToEditAsset();
+            string createdAssetCode = _manageAssetPage.GetAssetCodeOfCreatedAsset();
+            EditAssetPage _editAssetPage = _manageAssetPage.GoToEditAsset(createdAssetCode);
             _editAssetPage.EditNewAsset(afterEditAsset);
             Asset expectedAsset = AssetUpdater.CreateExpectedAsset(beforeEditAsset, afterEditAsset);
 
             ExtentReportHelper.LogTestStep("Verify user information");
+            _manageAssetPage.VerifyMessage(MessageConstant.UpdateAsssetSuccessfullyMessage);
             _manageAssetPage.VerifyAssetInformation(expectedAsset);
             _manageAssetPage.CloseModal();
             _manageAssetPage.StoreDataToDelete();

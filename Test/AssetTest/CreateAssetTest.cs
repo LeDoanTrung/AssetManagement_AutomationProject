@@ -1,4 +1,5 @@
-﻿using AssetManagement.DataObjects;
+﻿using AssetManagement.Constants;
+using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
@@ -17,7 +18,7 @@ namespace AssetManagement.Test.AssetTest
         [TestCase("valid_admin")]
         public void CreateNewAssetSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
+            Account valid_user = AccountData.GetAccount(accountKey);
             Asset createdAsset = AssetDataProvider.CreateRandomValidAsset();
 
             ExtentReportHelper.LogTestStep("Login");
@@ -33,6 +34,7 @@ namespace AssetManagement.Test.AssetTest
             _createNewAssetPage.CreateNewAsset(createdAsset);
 
             ExtentReportHelper.LogTestStep("Verify asset information");
+            _manageAssetPage.VerifyMessage(MessageConstant.CreateAsssetSuccessfullyMessage);
             _manageAssetPage.VerifyAssetInformation(createdAsset);
             _manageAssetPage.CloseModal();
             _manageAssetPage.StoreDataToDelete();

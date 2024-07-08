@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
+
 namespace AssetManagement.Library
 {
     public class Element
@@ -49,13 +50,18 @@ namespace AssetManagement.Library
             }
         }
 
-        public void ClickOnElement()
+        public void ClickWithScroll()
         {
             IWebElement element = WaitForElementToBeClickable();
             ScrollHelper.ScrollToElement(BrowserFactory.WebDriver, this);
             element.Click();
         }
 
+        public void Click()
+        {
+            IWebElement element = WaitForElementToBeClickable();
+            element.Click();
+        }
         public void ClearText()
         {
             var element = WaitForElementToVisible();
@@ -65,7 +71,6 @@ namespace AssetManagement.Library
         public void ClearTextFromTextArea()
         {
             var element = WaitForElementToVisible();
-            //element.Clear();
             element.SendKeys(Keys.Control + "a");
             element.SendKeys(Keys.Delete);
         }
@@ -127,7 +132,7 @@ namespace AssetManagement.Library
         public Element FindElement(By by)
         {
             var parentElement = WaitForElementToVisible();
-            parentElement.FindElement(by); 
+            parentElement.FindElement(by);
             return new Element(by);
         }
 

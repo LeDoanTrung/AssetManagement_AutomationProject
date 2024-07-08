@@ -1,8 +1,8 @@
 ﻿using AssetManagement.DataObjects;
-using AssetManagement.Library;
 using FluentAssertions;
 using OpenQA.Selenium;
 using AssetManagement.Library.ShareData;
+using AssetManagement.Library;
 
 
 namespace AssetManagement.Pages.UserPage
@@ -13,7 +13,6 @@ namespace AssetManagement.Pages.UserPage
         private Element _createUserBtn = new Element(By.XPath("//button[text()='Create New User']"));
         private Element _searchBar = new Element(By.Id("search-input"));
         private Element _searchIcon = new Element(By.Id("search-button"));
-        private Element _firstUserRecord = new Element(By.CssSelector("#table tbody tr:first-child"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No User Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
@@ -29,18 +28,21 @@ namespace AssetManagement.Pages.UserPage
         {
             return new Element(By.XPath($"//td[.='{staffCode}']/.."));
         }
+        private Element _message(string message)
+        {
+            return new Element(By.XPath($"//span[text()='{message}']"));
+        }
 
         //Method
         public CreateNewUserPage GoToCreateUserPage()
         {
-            _createUserBtn.ClickOnElement();
+            _createUserBtn.Click();
             return new CreateNewUserPage();
         }
-        public EditUserPage GoToEditUser()
+        public EditUserPage GoToEditUser(string staffCode)
         {
-            string staffCode = GetStaffCodeOfCreatedUser();
             var editIcon = _userRow(staffCode).FindElement(By.CssSelector(_editIconLocator));
-            editIcon.ClickOnElement();
+            editIcon.Click();
             return new EditUserPage();
         }
 
@@ -48,7 +50,7 @@ namespace AssetManagement.Pages.UserPage
         {
             _searchBar.ClearText();
             _searchBar.InputText(keyword);
-            _searchBar.SendKeys(Keys.Enter);
+            _searchIcon.Click();
         }
 
 
@@ -85,19 +87,20 @@ namespace AssetManagement.Pages.UserPage
             return -1;
         }
 
-        public void OpenDetailFirstRecort()
+        public void OpenDetailCreatedRecord()
         {
-            _firstUserRecord.ClickOnElement();
+            string staffCode = GetStaffCodeOfCreatedUser();
+            _userRow(staffCode).Click();
         }
 
         public void CloseModal()
         {
-            _closeModalIcon.ClickOnElement();
+            _closeModalIcon.Click();
         }
 
         public void VerifyCreatedUser(User user)
         {
-            Wait(1000);
+            Wait(1000); // Wait for loading data
             int staffCodeIndex = FindIndexOfTitleModal("Staff Code");
             int fullNameIndex = FindIndexOfTitleModal("Full Name");
             int dateOfBirthIndex = FindIndexOfTitleModal("Date of Birth");
@@ -133,7 +136,7 @@ namespace AssetManagement.Pages.UserPage
 
         public void VerifyUserInformation(User user)
         {
-            OpenDetailFirstRecort();
+            OpenDetailCreatedRecord();
             VerifyCreatedUser(user);
         }
 
@@ -142,11 +145,10 @@ namespace AssetManagement.Pages.UserPage
             Wait(1000);
             int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
             int fullNameIndex = FindIndexOfHeaderColumn("Full Name");
-            int usernameIndex = FindIndexOfHeaderColumn("Username");
 
             bool allRowsContainKeyword = true;
 
-            if (staffCodeIndex == -1 || fullNameIndex == -1 || usernameIndex == -1)
+            if (staffCodeIndex == -1 || fullNameIndex == -1)
             {
                 throw new Exception("One or more field of modal not found.");
             }
@@ -161,10 +163,9 @@ namespace AssetManagement.Pages.UserPage
 
                     string staffCode = cells.ElementAt(staffCodeIndex).Text;
                     string fullName = cells.ElementAt(fullNameIndex).Text;
-                    string username = cells.ElementAt(usernameIndex).Text;
 
                     // Check if any of the columns contain the keyword
-                    if (!IsKeywordInText(keyword, staffCode) && !IsKeywordInText(keyword, fullName) && !IsKeywordInText(keyword, username))
+                    if (!IsKeywordInText(keyword, staffCode) && !IsKeywordInText(keyword, fullName))
                     {
                         allRowsContainKeyword = false;
                         break;
@@ -176,7 +177,7 @@ namespace AssetManagement.Pages.UserPage
                 {
                     break;
                 }
-                _nextButton.ClickOnElement();
+                _nextButton.Click();
             } while (true);
 
             if (allRowsContainKeyword)
@@ -192,11 +193,23 @@ namespace AssetManagement.Pages.UserPage
             return !string.IsNullOrWhiteSpace(text) && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
         }
 
+        public bool VerifyMessage(string messasge)
+        {
+            return _message(messasge).IsElementDisplayed();
+        }
+
+        public bool IsUserEnabled(string code)
+        {
+            return _userRow(code).IsElementExist();
+        }
         public void DisableUser(string staffCode)
         {
-            var disableIcon = _userRow(staffCode).FindElement(By.CssSelector(_disableIconLocator));
-            disableIcon.ClickOnElement();
-            _disableButtonModal.ClickOnElement();
+            if (IsUserEnabled(staffCode))
+            {
+                var disableIcon = _userRow(staffCode).FindElement(By.CssSelector(_disableIconLocator));
+                disableIcon.Click();
+                _disableButtonModal.Click();
+            }
         }
 
         public string GetStaffCodeOfCreatedUser()
@@ -214,7 +227,7 @@ namespace AssetManagement.Pages.UserPage
             DataStorage.SetData("staffCode", staffCode);
         }
 
-        public void DeleteCreatedUserFromStorage()
+        public void DisableCreatedUserFromStorage()
         {
             if ((bool)DataStorage.GetData("hasCreatedUser"))
             {

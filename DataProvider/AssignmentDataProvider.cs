@@ -1,0 +1,46 @@
+﻿using AssetManagement.DataObjects;
+using Bogus;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AssetManagement.DataProvider
+{
+    public class AssignmentDataProvider
+    {
+        private static readonly Random Random = new Random();
+        public static Assignment CreateRandomValidAssignment()
+        {
+            var assignment = new Assignment
+            {
+                AssignedDate = GenerateAssignedDate(),
+                Note = "",
+            };
+
+            return assignment;
+        }
+
+        private static string GenerateToday()
+        {
+            DateTime assignedDate = DateTime.Today;
+            return assignedDate.ToString("dd/MM/yyyy");
+        }
+
+        private static string GenerateAssignedDate()
+        {
+            var faker = new Faker();
+            DateTime today = DateTime.Today;
+            DateTime assignedDate = faker.Date.Future(10, today);
+            return assignedDate.ToString("dd/MM/yyyy");
+        }
+
+        private static string GenerateNote()
+        {
+            var faker = new Faker();
+            string specification = faker.Lorem.Sentence(60, 10);
+            return specification.Length > 300 ? specification.Substring(0, 300).Trim() : specification;
+        }
+    }
+}

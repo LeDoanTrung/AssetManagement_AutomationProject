@@ -1,4 +1,5 @@
 ﻿using AssetManagement.DataObjects;
+using AssetManagement.Library.Utils;
 using Bogus;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,20 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.DataProvider
 {
-    public static class UserDataProvider
+    public class UserDataProvider
     {
         private static readonly Random Random = new Random();
+        private readonly Dictionary<string, Account> _accounts;
 
+        public UserDataProvider(string accountFilePath)
+        {
+            _accounts = JsonHelper.ReadAndParse<Dictionary<string, Account>>(accountFilePath);
+        }
+
+        public Account GetAccount(string key)
+        {
+            return _accounts.ContainsKey(key) ? _accounts[key] : null;
+        }
         public static User CreateRandomValidUser(bool isAdmin = true, bool isSDStaffType = true, string adminLocation = "HCM: Ho Chi Minh")
         {
             var faker = new Faker();
@@ -87,5 +98,6 @@ namespace AssetManagement.DataProvider
         {
             return Regex.Replace(name, "[^a-zA-Z]", "");
         }
+
     }
 }

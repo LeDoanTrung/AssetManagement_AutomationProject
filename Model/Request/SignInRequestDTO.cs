@@ -5,21 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.DataObjects
+namespace AssetManagement.Model.Request
 {
-    public class Account
+    public class SignInRequestDTO
     {
         [JsonProperty("userName")]
         public string UserName { get; set; }
 
         [JsonProperty("password")]
         public string Password { get; set; }
-
-        [JsonProperty("fullName")]
-        public string FullName { get; set; }
-
-        [JsonProperty("staffCode")]
-        public string StaffCode { get; set; }
-
     }
 }

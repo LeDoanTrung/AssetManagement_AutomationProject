@@ -1,5 +1,6 @@
 ﻿using AssetManagement.Library;
 using AssetManagement.Pages.AssetPage;
+using AssetManagement.Pages.AssignmentPage;
 using AssetManagement.Pages.UserPage;
 using OpenQA.Selenium;
 
@@ -17,11 +18,15 @@ namespace AssetManagement.Pages
         {
             _menuTab = new MenuTab();
         }
-        protected void Wait(int milliseconds)
+        public void Wait(int milliseconds)
         {
             Task.Delay(milliseconds).Wait();
         }
 
+        public void RefreshPage()
+        {
+            BrowserFactory.WebDriver.Navigate().Refresh();
+        }
         public HomePage NavigateToManageHomePage(string menuItem = "Home")
         {
             _menuTab.SelectMenuItem(menuItem);
@@ -42,6 +47,7 @@ namespace AssetManagement.Pages
 
         public ManageAssignmentPage NavigateToMangeAssignmentPage(string menuItem = "Manage Assignment")
         {
+            Wait(2000); // Wait for loading data
             _menuTab.SelectMenuItem(menuItem);
             return new ManageAssignmentPage();
         }

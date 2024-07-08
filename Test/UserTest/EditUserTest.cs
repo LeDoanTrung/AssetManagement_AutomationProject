@@ -16,15 +16,21 @@ namespace AssetManagement.Test.UserTest
     public class EditUserTest : BaseTest
     {
         private ManageUserPage _manageUserPage;
+        private User beforeEditUser;
+        private User afterEditUser;
+
+        [SetUp]
+        public void BeforeEditUserTest()
+        {
+            beforeEditUser = UserDataProvider.CreateRandomValidUser();
+            afterEditUser = UserDataProvider.CreateRandomValidUser();
+        }
 
         [Test, Description("Edit user successfully")]
         [TestCase("valid_admin")]
         public void EditUserWithValidDataSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
-
-            User beforeEditUser = UserDataProvider.CreateRandomValidUser();
-            User afterEditUser = UserDataProvider.CreateRandomValidUser();
+            Account valid_user = AccountData.GetAccount(accountKey);
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
@@ -39,7 +45,8 @@ namespace AssetManagement.Test.UserTest
             _createNewUserPage.CreateNewUser(beforeEditUser);
 
             ExtentReportHelper.LogTestStep("Edit the created user");
-            EditUserPage _editUserPage = _manageUserPage.GoToEditUser();
+            string staffCode = _manageUserPage.GetStaffCodeOfCreatedUser();
+            EditUserPage _editUserPage = _manageUserPage.GoToEditUser(staffCode);
             _editUserPage.EditNewUser(afterEditUser);
             User expectedUser = UserUpdater.CreateExpectedUser(beforeEditUser, afterEditUser);
 
@@ -52,7 +59,7 @@ namespace AssetManagement.Test.UserTest
         [TearDown]
         public void AfterEditUserTest()
         {
-            _manageUserPage.DeleteCreatedUserFromStorage();
+            _manageUserPage.DisableCreatedUserFromStorage();
         }
     }
 }

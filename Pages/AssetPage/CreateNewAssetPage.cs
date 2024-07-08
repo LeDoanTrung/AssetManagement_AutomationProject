@@ -37,8 +37,8 @@ namespace AssetManagement.Pages.AssetPage
 
         public void SelectCategory(string category)
         {
-            _categoryDropdown.ClickOnElement();
-            _categoryValue(category).ClickOnElement();
+            _categoryDropdown.ClickWithScroll();
+            _categoryValue(category).ClickWithScroll();
         }
 
         public void InputSpecification(string specification)
@@ -55,13 +55,13 @@ namespace AssetManagement.Pages.AssetPage
 
         public void SelectState(string state)
         {
-            _state(state).ClickOnElement();
+            _state(state).ClickWithScroll();
         }
 
         public void ClickOnSaveBtn()
         {
             _saveButton.IsElementEnabled();
-            _saveButton.ClickOnElement();
+            _saveButton.ClickWithScroll();
         }
         public void CreateNewAsset(Asset asset)
         {

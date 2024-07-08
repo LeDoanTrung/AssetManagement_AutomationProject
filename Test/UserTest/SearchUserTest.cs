@@ -11,13 +11,19 @@ namespace AssetManagement.Test.UserTest
     public class SearchUserTest : BaseTest
     {
         private ManageUserPage _manageUserPage;
+        private User createdUser;
+
+        [SetUp]
+        public void BeforeSearchUserTest()
+        {
+            createdUser = UserDataProvider.CreateRandomValidUser();
+        }
 
         [Test, Description("Search user by name")]
         [TestCase("valid_admin")]
         public void SearchUserByNameWithAssociatedResult(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
-            User createdUser = UserDataProvider.CreateRandomValidUser();
+            Account valid_user = AccountData.GetAccount(accountKey);
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
@@ -41,7 +47,7 @@ namespace AssetManagement.Test.UserTest
         [TearDown]
         public void AfterSearchUserTest()
         {
-            _manageUserPage.DeleteCreatedUserFromStorage();
+            _manageUserPage.DisableCreatedUserFromStorage();
         }
     }
 }

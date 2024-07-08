@@ -1,11 +1,8 @@
-﻿using AssetManagement.Constants;
-using AssetManagement.DataObjects;
+﻿using AssetManagement.DataObjects;
 using AssetManagement.Library;
 using AssetManagement.Library.ShareData;
-using AventStack.ExtentReports;
-using Bogus.DataSets;
+using AssetManagement.Pages.AssetPage;
 using FluentAssertions;
-using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -13,33 +10,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Pages.AssetPage
+namespace AssetManagement.Pages.AssignmentPage
 {
-    public class ManageAssetPage : BasePage
+    public class ManageAssignmentPage : BasePage
     {
         //Web Element
-        private Element _createAssetBtn = new Element(By.XPath("//button[text()='Create New Asset']"));
+        private Element _createAssignmentBtn = new Element(By.XPath("//button[text()='Create new assignment']"));
         private Element _searchBar = new Element(By.Id("search-input"));
         private Element _searchIcon = new Element(By.Id("search-button"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
-        private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No Asset Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
         private Element _deleteButtonModal = new Element(By.XPath("//button[.='Delete']"));
-        private string _modalFieldTitle = "div[name = 'asset_modal_row_header']";
-        private string _modalValue = "div[name = 'asset_modal_row_data']";
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";
         private string _deleteIconLocator = "svg[data-icon='circle-xmark']";
         private string _editIconLocator = "svg[data-icon='pencil']";
         private string _showMoreLocator = "//span[text()=' Show more']";
-        private Element _modalData(string field)
+        private Element _modalData(string field) 
         {
-            return new Element(By.XPath($"//div[text()='{field}' and @name='asset_modal_row_header']/following-sibling::div"));
+            return new Element(By.CssSelector($"div[id=assignment_model_row_data_{field}]"));
         }
-        private Element _assetRow(string assetCode)
+        private Element _assignmentRow(string assignmentId)
         {
-            return new Element(By.XPath($"//td[.='{assetCode}']/.."));
+            return new Element(By.XPath($"//td[.='{assignmentId}']/.."));
+        }
+        private Element _selectedRow(string assetName, string status)
+        {
+            return new Element(By.XPath($"//div[text()='{status}']/ancestor::tr/descendant::div[text()='{assetName}']"));
         }
         private Element _message(string message)
         {
@@ -47,34 +45,27 @@ namespace AssetManagement.Pages.AssetPage
         }
 
         //Method
-        public CreateNewAssetPage GoToCreateAssetPage()
+        public CreateNewAssignmentPage GoToCreateAssignmentPage()
         {
-            _createAssetBtn.Click();
-            return new CreateNewAssetPage();
+            _createAssignmentBtn.Click();
+            return new CreateNewAssignmentPage();
         }
 
-        public EditAssetPage GoToEditAsset(string assetCode)
+        public string GetIdOfCreatedAssignment()
         {
-            var editIcon = _assetRow(assetCode).FindElement(By.CssSelector(_editIconLocator));
-            editIcon.Click();
-            return new EditAssetPage(); 
-        }
-
-        public string GetAssetCodeOfCreatedAsset()
-        {
-            Wait(1000); // Wait for fetching data
-            int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
+            Wait(3000);
+            int assignmentIdIndex = FindIndexOfHeaderColumn("No.");
             var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
-            string assetCode = cells.ElementAt(assetCodeIndex).Text;
-            return assetCode;
+            string assignmentId = cells.ElementAt(assignmentIdIndex).Text;
+            return assignmentId;
         }
+
         public void EnterSearchKeyword(string keyword)
         {
             _searchBar.ClearText();
             _searchBar.InputText(keyword);
             _searchIcon.Click();
         }
-
         public void ClickAllShowMoreButtons()
         {
             var showMoreElements = BrowserFactory.WebDriver.FindElements(By.XPath(_showMoreLocator));
@@ -102,62 +93,52 @@ namespace AssetManagement.Pages.AssetPage
             return -1;
         }
 
-        public void OpenDetailCreatedRecord()
+         public void OpenDetailCreatedRecord(string assetName)
         {
-            string assetCode = GetAssetCodeOfCreatedAsset();
-            _assetRow(assetCode).Click();
+            _selectedRow(assetName, "Waiting for acceptance").Click();
         }
 
         public void CloseModal()
         {
-            _closeModalIcon.Click();
+            _closeModalIcon.ClickWithScroll();
         }
 
-        public void VerifyCreatedAsset(Asset asset)
-        {          
-            string assetCode = _modalData("Asset Code").GetText();
-            string assetName = _modalData("Asset Name").GetText();
-            string category = _modalData("Category").GetText();
-            string installedDate = _modalData("Installed Date").GetText();
-            string state = _modalData("State").GetText();
-            string specification = _modalData("Specification").GetText().Replace(" Show less", "");
+        public void VerifyCreatedAssignment(Assignment assignment, Account assignedToAccount, Account assignedByAccount , Asset asset)
+        {
+            string assetName = _modalData("assetName").GetText();
+            string specification = _modalData("specification").GetText().Replace(" Show less", "");
+            string assignedTo = _modalData("assignedTo").GetText();
+            string assignedBy = _modalData("assignedBy").GetText();
+            string assignedDate = _modalData("assignedDate").GetText();
+            string state = _modalData("status").GetText();
+            string note = _modalData("note").GetText().Replace(" Show less", "");
 
-            AssetCodeVerifier(assetCode, asset.Category).Should().BeTrue();
             assetName.Should().Be(asset.Name, "Asset name does not match.");
-            category.Should().Be(asset.Category, "Category does not match.");
-            installedDate.Should().Be(asset.InstalledDate, "Installed Date does not match.");
-            state.Should().Be(asset.State, "State does not match.");
             specification.Should().Be(asset.Specification, "Specification does not match.");
+            assignedTo.Should().Be(assignedToAccount.UserName);
+            assignedBy.Should().Be(assignedByAccount.UserName);
+            assignedDate.Should().Be(assignment.AssignedDate);
+            state.Should().Be("Waiting for acceptance", "State does not match.");
+            note.Should().Be(assignment.Note);
         }
 
-        public bool AssetCodeVerifier(string assetCode, string category)
+        public void VerifyAssignmentInformation(Assignment assignment, Account assignedToAccount, Account assignedByAccount , Asset asset)
         {
-            if (string.IsNullOrEmpty(assetCode) || string.IsNullOrEmpty(category))
-            {
-                return false;
-            }
-            //Verify that assetCode contains correct prefix
-            string[] categoryWords = category.Trim().Split(' ');
-            string categoryInitials = string.Concat(categoryWords.Select(word => word[0]));
-            return assetCode.StartsWith(categoryInitials, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public void VerifyAssetInformation(Asset asset)
-        {
-            OpenDetailCreatedRecord();
+            OpenDetailCreatedRecord(asset.Name);
             ClickAllShowMoreButtons();
-            VerifyCreatedAsset(asset);
+            VerifyCreatedAssignment(assignment, assignedToAccount, assignedByAccount, asset);
         }
 
-        public bool VerifySearchAssetWithAssociatedResult(string keyword)
+        public bool VerifySearchAssignmentWithAssociatedResult(string keyword)
         {
-            Wait(1000); // Wait for loading data
+            Wait(1000); //Waiting for loading data
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             int assetNameIndex = FindIndexOfHeaderColumn("Asset Name");
+            int assignedToIndex = FindIndexOfHeaderColumn("Assigned To");
 
             bool allRowsContainKeyword = true;
 
-            if (assetCodeIndex == -1 || assetNameIndex == -1 )
+            if (assetCodeIndex == -1 || assetNameIndex == -1 || assignedToIndex == -1)
             {
                 throw new Exception("One or more field of modal not found.");
             }
@@ -172,9 +153,10 @@ namespace AssetManagement.Pages.AssetPage
 
                     string assetCode = cells.ElementAt(assetCodeIndex).Text;
                     string assetName = cells.ElementAt(assetNameIndex).Text;
+                    string assignedTo = cells.ElementAt(assignedToIndex).Text;
 
                     // Check if any of the columns contain the keyword
-                    if (!IsKeywordInText(keyword, assetCode) && !IsKeywordInText(keyword, assetName))
+                    if (!IsKeywordInText(keyword, assetCode) && !IsKeywordInText(keyword, assetName) && !IsKeywordInText(keyword, assignedTo))
                     {
                         allRowsContainKeyword = false;
                         break;
@@ -186,7 +168,7 @@ namespace AssetManagement.Pages.AssetPage
                 {
                     break;
                 }
-                _nextButton.Click();
+                _nextButton.ClickWithScroll();
             } while (true);
 
             if (allRowsContainKeyword)
@@ -207,38 +189,39 @@ namespace AssetManagement.Pages.AssetPage
             return _message(messasge).IsElementDisplayed();
         }
 
-        public bool IsAssetExist(string code)
+        public bool IsAssignmentExist(string id)
         {
-            return _assetRow(code).IsElementExist();
+            return _assignmentRow(id).IsElementExist();
         }
 
-        public void DeleteAsset(string assetCode)
+        public void DeleteAssignment(string assignmentId)
         {
-            if (IsAssetExist(assetCode))
+            if (IsAssignmentExist(assignmentId))
             {
-                var deleteIcon = _assetRow(assetCode).FindElement(By.CssSelector(_deleteIconLocator));
+                var deleteIcon = _assignmentRow(assignmentId).FindElement(By.CssSelector(_deleteIconLocator));
                 deleteIcon.Click();
                 _deleteButtonModal.Click();
-            }
-
+            }           
         }
 
         public void StoreDataToDelete()
         {
-            string assetCode = GetAssetCodeOfCreatedAsset();
+            string assignmentId = GetIdOfCreatedAssignment();
 
             DataStorage.SetData("hasCreatedAsset", true);
-            DataStorage.SetData("assetCode", assetCode);
+            DataStorage.SetData("assignmentId", assignmentId);
         }
 
-        public void DeleteCreatedAssetFromStorage()
+        public void DeleteCreatedAssignmentFromStorage()
         {
             if ((bool)DataStorage.GetData("hasCreatedAsset"))
             {
-                DeleteAsset(
-                (string)DataStorage.GetData("assetCode")
+                DeleteAssignment(
+                (string)DataStorage.GetData("assignmentId")
                 );
             }
         }
+
+
     }
 }

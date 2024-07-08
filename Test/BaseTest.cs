@@ -1,7 +1,9 @@
 ﻿using AssetManagement.Constants;
 using AssetManagement.DataObjects;
+using AssetManagement.DataProvider;
 using AssetManagement.Extenstions;
 using AssetManagement.Library;
+using AssetManagement.Library.API;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Library.Utils;
 using AssetManagement.Pages;
@@ -12,12 +14,14 @@ namespace AssetManagement.Test
     [TestFixture]
     public abstract class BaseTest
     {
-        protected Dictionary<string, Account> AccountData;
+        protected UserDataProvider AccountData;
         protected string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
         protected LoginPage _loginPage;
+        protected static APIClient ApiClient;
         public BaseTest()
         {
-            AccountData = JsonHelper.ReadAndParse<Dictionary<string, Account>>(FileConstant.AccountFilePath.GetAbsolutePath());
+            AccountData = new UserDataProvider(FileConstant.AccountFilePath.GetAbsolutePath());
+            ApiClient = new APIClient(ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "DomainURL"));
             _loginPage = new LoginPage();
         }
 

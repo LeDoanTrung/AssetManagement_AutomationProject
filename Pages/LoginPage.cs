@@ -28,7 +28,7 @@ namespace AssetManagement.Pages
 
         public void ClickOnLoginBtn()
         {
-            _loginBtn.ClickOnElement();
+            _loginBtn.ClickWithScroll();
         }
 
         public HomePage Login(Account account)

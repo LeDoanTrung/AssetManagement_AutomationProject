@@ -54,7 +54,7 @@ namespace AssetManagement.Pages.UserPage
 
         public void SelectGender(string gender)
         {
-            _gender(gender).ClickOnElement();
+            _gender(gender).ClickWithScroll();
         }
 
         public void SelectType(string type)
@@ -74,7 +74,7 @@ namespace AssetManagement.Pages.UserPage
         public void ClickOnSaveBtn()
         {
             _saveButton.IsElementEnabled();
-            _saveButton.ClickOnElement();
+            _saveButton.ClickWithScroll();
         }
 
 

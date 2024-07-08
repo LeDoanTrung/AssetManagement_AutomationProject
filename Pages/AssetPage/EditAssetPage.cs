@@ -38,18 +38,18 @@ namespace AssetManagement.Pages.AssetPage
 
         public void SelectState(string state)
         {
-            _state(state).ClickOnElement();
+            _state(state).ClickWithScroll();
         }
 
         public void ClickOnSaveBtn()
         {
             _saveButton.IsElementEnabled();
-            _saveButton.ClickOnElement();
+            _saveButton.ClickWithScroll();
         }
 
         public void EditNewAsset(Asset asset)
         {
-            Wait(3000);
+            Wait(3000); // Wait for loading data
             InputAssetName(asset.Name);
             InputSpecification(asset.Specification);
             InputInstalledDate(asset.InstalledDate);

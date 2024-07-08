@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.DataObjects
 {
-    public class SearchKeyword
+    public class Assignment
     {
-        [JsonProperty("keyword")]
-        public string Keyword { get; set; }
+        [JsonProperty("assignedDate")]
+        public string AssignedDate { get; set; }
+
+        [JsonProperty("note")]
+        public string Note { get; set; }
     }
 }

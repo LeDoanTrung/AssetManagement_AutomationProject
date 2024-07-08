@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AssetManagement.DataProvider
 {
-    public static class AssetDataProvider
+    public class AssetDataProvider
     {
         private static readonly Random Random = new Random();
         public static Asset CreateRandomValidAsset(string category = "Laptop")
@@ -38,6 +38,19 @@ namespace AssetManagement.DataProvider
 
             return asset;
         }
+        public static Asset CreateRandomValidAssetForAssignment(string category = "Laptop")
+        {
+            var asset = new Asset
+            {
+                Name = GenerateName(),
+                Category = category,
+                Specification = GenerateSpecification(),
+                InstalledDate = GenerateInstalledDate(),
+                State ="Available"
+            };
+
+            return asset;
+        }
 
         private static string GenerateName()
         {
@@ -49,7 +62,7 @@ namespace AssetManagement.DataProvider
         {
             var faker = new Faker();
             string specification = faker.Lorem.Sentence(60, 10);
-            return specification.Length > 300 ? specification.Substring(0, 300) : specification;
+            return specification.Length > 300 ? specification.Substring(0, 300).Trim() : specification;
         }
 
         private static string GenerateInstalledDate()
@@ -71,6 +84,7 @@ namespace AssetManagement.DataProvider
             string[] states = { "Available", "Not available", "Waiting for recycling", "Recycled" };
             return states[Random.Next(states.Length)];
         }
+
 
     }
 }

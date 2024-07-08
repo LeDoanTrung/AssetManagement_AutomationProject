@@ -13,7 +13,7 @@ namespace AssetManagement.Test.TestLogin
         [TestCase("valid_admin")]
         public void LoginWithValidAdminAccountSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
+            Account valid_user = AccountData.GetAccount(accountKey);
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
@@ -27,7 +27,7 @@ namespace AssetManagement.Test.TestLogin
         [TestCase("valid_staff")]
         public void LoginWithValidStaffAccountSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
+            Account valid_user = AccountData.GetAccount(accountKey);
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);

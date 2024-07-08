@@ -19,7 +19,7 @@ namespace AssetManagement.Test.TestCreateUser
         [TestCase("valid_admin")]
         public void CreateAdminUserSuccessfully(string accountKey)
         {
-            Account valid_user = AccountData[accountKey];
+            Account valid_user = AccountData.GetAccount(accountKey);
             User createdUser = UserDataProvider.CreateRandomValidUser();
 
             ExtentReportHelper.LogTestStep("Login");
@@ -43,7 +43,7 @@ namespace AssetManagement.Test.TestCreateUser
         [TearDown]
         public void AfterCreateUserTest()
         { 
-            _manageUserPage.DeleteCreatedUserFromStorage();
+            _manageUserPage.DisableCreatedUserFromStorage();
         }
     }
 }

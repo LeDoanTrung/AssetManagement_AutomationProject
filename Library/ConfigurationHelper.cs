@@ -25,5 +25,6 @@ namespace AssetManagement.Library
             var message = $"Attribute {key} has not been set in appsettings.json";
             throw new InvalidDataException(message);
         }
+
     }
 }
