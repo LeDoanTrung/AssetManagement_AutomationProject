@@ -3,7 +3,6 @@ using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
 
-
 namespace AssetManagement.Test.TestLogin
 {
     public class LoginTest : BaseTest

@@ -81,21 +81,10 @@ namespace AssetManagement.Library
             element.SendKeys(text);
         }
 
-        public void VerifyMessage(string expectedMessage)
-        {
-            var message = WaitForElementToVisible().Text;
-            Assert.AreEqual(expectedMessage, message);
-        }
-
         public string GetText()
         {
             var text = WaitForElementToVisible().Text;
             return text;
-        }
-
-        public string GetValue()
-        {
-            return WaitForElementToVisible().GetAttribute("value");
         }
 
         public void SendKeys(string keys)
@@ -146,6 +135,14 @@ namespace AssetManagement.Library
             catch (NoSuchElementException)
             {
                 return false;
+            }
+        }
+
+        public void WaitForElementToDisappear()
+        {        
+            if (!BrowserFactory.Wait.Until(ExpectedConditions.InvisibilityOfElementLocated(this.By)))
+            {
+                throw new WebDriverTimeoutException($"Element with locator: {this.By} did not disappear");
             }
         }
     }

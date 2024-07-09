@@ -39,10 +39,6 @@ namespace AssetManagement.Pages.AssignmentPage
         {
             return new Element(By.XPath($"//div[text()='{status}']/ancestor::tr/descendant::div[text()='{assetName}']"));
         }
-        private Element _message(string message)
-        {
-            return new Element(By.XPath($"//span[text()='{message}']"));
-        }
 
         //Method
         public CreateNewAssignmentPage GoToCreateAssignmentPage()
@@ -53,7 +49,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public string GetIdOfCreatedAssignment()
         {
-            Wait(3000);
+            WaitForLoading();
             int assignmentIdIndex = FindIndexOfHeaderColumn("No.");
             var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
             string assignmentId = cells.ElementAt(assignmentIdIndex).Text;
@@ -131,7 +127,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public bool VerifySearchAssignmentWithAssociatedResult(string keyword)
         {
-            Wait(1000); //Waiting for loading data
+            WaitForLoading(); //Waiting for loading data
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             int assetNameIndex = FindIndexOfHeaderColumn("Asset Name");
             int assignedToIndex = FindIndexOfHeaderColumn("Assigned To");
@@ -184,11 +180,6 @@ namespace AssetManagement.Pages.AssignmentPage
             return !string.IsNullOrWhiteSpace(text) && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool VerifyMessage(string messasge)
-        {
-            return _message(messasge).IsElementDisplayed();
-        }
-
         public bool IsAssignmentExist(string id)
         {
             return _assignmentRow(id).IsElementExist();
@@ -221,7 +212,6 @@ namespace AssetManagement.Pages.AssignmentPage
                 );
             }
         }
-
 
     }
 }

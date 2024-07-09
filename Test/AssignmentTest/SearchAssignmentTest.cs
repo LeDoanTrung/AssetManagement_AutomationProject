@@ -1,4 +1,5 @@
-﻿using AssetManagement.DataObjects;
+﻿using AssetManagement.Constants;
+using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
@@ -39,12 +40,15 @@ namespace AssetManagement.Test.AssignmentTest
             _manageAssetPage = _homePage.NavigateToMangeAssetPage();
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
             _createNewAssetPage.CreateNewAsset(createdAsset);
+            _manageAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
-            ExtentReportHelper.LogTestStep("Go to Manage Assignment Page");
+            ExtentReportHelper.LogTestStep("Create new Assignment with valid data");
             _manageAssignmentPage = _homePage.NavigateToMangeAssignmentPage();
+            CreateNewAssignmentPage _createNewAssignmentPage = _manageAssignmentPage.GoToCreateAssignmentPage();
+            _createNewAssignmentPage.CreateNewAssignment(createdAssignment, valid_user.FullName, createdAsset.Name);
 
             ExtentReportHelper.LogTestStep("Search Assignment by Assigned User's name");
-            _manageAssignmentPage.EnterSearchKeyword(valid_user.UserName);
+            _manageAssignmentPage.EnterSearchKeyword(createdAsset.Name);
 
             ExtentReportHelper.LogTestStep("Verify search result");
             _manageAssignmentPage.VerifySearchAssignmentWithAssociatedResult(createdAsset.Name);

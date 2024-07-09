@@ -6,7 +6,7 @@ using AssetManagement.Library;
 using AssetManagement.Library.API;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Library.Utils;
-using AssetManagement.Pages;
+using AssetManagement.Pages.LoginPage;
 
 
 namespace AssetManagement.Test
@@ -17,11 +17,9 @@ namespace AssetManagement.Test
         protected UserDataProvider AccountData;
         protected string loginUrl = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "TestURL");
         protected LoginPage _loginPage;
-        protected static APIClient ApiClient;
         public BaseTest()
         {
             AccountData = new UserDataProvider(FileConstant.AccountFilePath.GetAbsolutePath());
-            ApiClient = new APIClient(ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "DomainURL"));
             _loginPage = new LoginPage();
         }
 

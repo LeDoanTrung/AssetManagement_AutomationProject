@@ -41,21 +41,23 @@ namespace AssetManagement.Pages.AssignmentPage
         //Method
         public void InputUser(string userName, string field = "User List")
         {
-            _userField.ClickWithScroll();
+            _userField.Click();
+            WaitForLoading(); // Wait for loading search result
             _searchBar(field).ClearText();
             _searchBar(field).InputText(userName);
-            _searchIcon(field).ClickWithScroll();
+            _searchIcon(field).Click();
             _selectUserRow(userName).ClickWithScroll();
             _modalSaveButton(field).ClickWithScroll();
         }
 
-        public void InputAsset(string userName, string field = "Asset List")
+        public void InputAsset(string assetName, string field = "Asset List")
         {
-            _assetField.ClickWithScroll();
+            _assetField.Click();
+            WaitForLoading(); // Wait for loading search result
             _searchBar(field).ClearText();
-            _searchBar(field).InputText(userName);
-            _searchIcon(field).ClickWithScroll();
-            _selectUserRow(userName).ClickWithScroll();
+            _searchBar(field).InputText(assetName);
+            _searchIcon(field).Click();
+            _selectUserRow(assetName).Click();
             _modalSaveButton(field).ClickWithScroll();
         }
 
@@ -73,7 +75,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public void ClickOnSaveBtn()
         {
-            _saveButton.ClickWithScroll();
+            _saveButton.Click();
         }
 
         public void CreateNewAssignment(Assignment assignment, string userName, string assetName)

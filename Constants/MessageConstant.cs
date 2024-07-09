@@ -20,5 +20,12 @@ namespace AssetManagement.Constants
         //Update Successfully Message
         public const string UpdateAsssetSuccessfullyMessage = "Update Asset successfully.";
 
+
+        //Accept Assignment Message
+        public const string AcceptAssignmentSuccessfullyMessage = "Assignment accepted successfully.";
+
+        //Return Assignment Message
+        public const string ReturnAssignmentSuccessfullyMessage = "Create request successfully.";
+        public const string AcceptRequestOfReturningMessage = "Complete Return Request Succesfully";
     }
 }

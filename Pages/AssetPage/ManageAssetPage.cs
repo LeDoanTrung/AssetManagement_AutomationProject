@@ -41,10 +41,6 @@ namespace AssetManagement.Pages.AssetPage
         {
             return new Element(By.XPath($"//td[.='{assetCode}']/.."));
         }
-        private Element _message(string message)
-        {
-            return new Element(By.XPath($"//span[text()='{message}']"));
-        }
 
         //Method
         public CreateNewAssetPage GoToCreateAssetPage()
@@ -62,7 +58,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public string GetAssetCodeOfCreatedAsset()
         {
-            Wait(1000); // Wait for fetching data
+            WaitForLoading(); // Wait for fetching data
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
             string assetCode = cells.ElementAt(assetCodeIndex).Text;
@@ -151,7 +147,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public bool VerifySearchAssetWithAssociatedResult(string keyword)
         {
-            Wait(1000); // Wait for loading data
+            WaitForLoading(); // Wait for loading data
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             int assetNameIndex = FindIndexOfHeaderColumn("Asset Name");
 
@@ -202,11 +198,6 @@ namespace AssetManagement.Pages.AssetPage
             return !string.IsNullOrWhiteSpace(text) && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool VerifyMessage(string messasge)
-        {
-            return _message(messasge).IsElementDisplayed();
-        }
-
         public bool IsAssetExist(string code)
         {
             return _assetRow(code).IsElementExist();
@@ -240,5 +231,6 @@ namespace AssetManagement.Pages.AssetPage
                 );
             }
         }
+
     }
 }

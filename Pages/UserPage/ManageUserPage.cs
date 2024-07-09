@@ -28,10 +28,6 @@ namespace AssetManagement.Pages.UserPage
         {
             return new Element(By.XPath($"//td[.='{staffCode}']/.."));
         }
-        private Element _message(string message)
-        {
-            return new Element(By.XPath($"//span[text()='{message}']"));
-        }
 
         //Method
         public CreateNewUserPage GoToCreateUserPage()
@@ -100,7 +96,7 @@ namespace AssetManagement.Pages.UserPage
 
         public void VerifyCreatedUser(User user)
         {
-            Wait(1000); // Wait for loading data
+            WaitForLoading(); // Wait for loading data
             int staffCodeIndex = FindIndexOfTitleModal("Staff Code");
             int fullNameIndex = FindIndexOfTitleModal("Full Name");
             int dateOfBirthIndex = FindIndexOfTitleModal("Date of Birth");
@@ -142,7 +138,7 @@ namespace AssetManagement.Pages.UserPage
 
         public bool VerifySearchUserWithAssociatedResult(string keyword)
         {
-            Wait(1000);
+            WaitForLoading(); // Wait for loading data
             int staffCodeIndex = FindIndexOfHeaderColumn("Staff Code");
             int fullNameIndex = FindIndexOfHeaderColumn("Full Name");
 
@@ -193,11 +189,6 @@ namespace AssetManagement.Pages.UserPage
             return !string.IsNullOrWhiteSpace(text) && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool VerifyMessage(string messasge)
-        {
-            return _message(messasge).IsElementDisplayed();
-        }
-
         public bool IsUserEnabled(string code)
         {
             return _userRow(code).IsElementExist();
@@ -235,6 +226,12 @@ namespace AssetManagement.Pages.UserPage
                 (string)DataStorage.GetData("staffCode")
                 );
             }
+        }
+
+        public void FindAndDisableUserAfterTest()
+        {
+            EnterSearchKeyword((string)DataStorage.GetData("staffCode"));
+            DisableCreatedUserFromStorage();
         }
     }
 }

@@ -2,7 +2,6 @@
 using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
 using AssetManagement.Pages.AssetPage;
-using AssetManagement.Pages;
 using AssetManagement.Pages.UserPage;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AssetManagement.Library.ReportHelper;
 using FluentAssertions;
+using AssetManagement.Pages;
 
 namespace AssetManagement.Test.UserTest
 {

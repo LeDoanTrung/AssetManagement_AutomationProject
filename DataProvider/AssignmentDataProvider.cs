@@ -16,7 +16,18 @@ namespace AssetManagement.DataProvider
             var assignment = new Assignment
             {
                 AssignedDate = GenerateAssignedDate(),
-                Note = "",
+                Note = GenerateNote(),
+            };
+
+            return assignment;
+        }
+
+        public static Assignment CreateRandomValidAssignmentForReturning()
+        {
+            var assignment = new Assignment
+            {
+                AssignedDate = GenerateToday(),
+                Note = GenerateNote(),
             };
 
             return assignment;

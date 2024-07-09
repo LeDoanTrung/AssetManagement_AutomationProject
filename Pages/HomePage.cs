@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using AssetManagement.DataObjects;
+using AssetManagement.Library;
+using FluentAssertions;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,18 @@ namespace AssetManagement.Pages
 {
     public class HomePage : BasePage
     {
+        //Element
+        private string _returnIconLocator = "svg[data-icon='rotate-left']";
+        private string _acceptIconLocator = "svg[data-icon='check']";
+        private Element _assignmentRow(string assetCode)
+        {
+            return new Element(By.XPath($"//td[.='{assetCode}']/.."));
+        }
+        private Element _buttonOnModal(string value)
+        {
+            return new Element(By.XPath($"//button[.='{value}']"));
+        }
+
         //Method
         public void IsAtHomePage()
         {
@@ -35,5 +50,31 @@ namespace AssetManagement.Pages
             _menuTab.GetMenuItem("Request for Returning").IsElementExist().Should().BeFalse();
             _menuTab.GetMenuItem("Report").IsElementExist().Should().BeFalse();
         }
+
+        public bool IsAssignmentExist(string assetCode)
+        {
+            return _assignmentRow(assetCode).IsElementExist();
+        }
+        public void RequestForReturnAsset(string assetCode)
+        {
+            if (IsAssignmentExist(assetCode))
+            {
+                var returnIcon = _assignmentRow(assetCode).FindElement(By.CssSelector(_returnIconLocator));
+                returnIcon.Click();
+                _buttonOnModal("Return").Click();
+            }
+        }
+
+        public void AcceptAssignment(string assetCode)
+        {
+            if (IsAssignmentExist(assetCode))
+            {
+                var acceptIcon = _assignmentRow(assetCode).FindElement(By.CssSelector(_acceptIconLocator));
+                acceptIcon.Click();
+                _buttonOnModal("Accept").Click();
+            }
+        }
+
+
     }
 }

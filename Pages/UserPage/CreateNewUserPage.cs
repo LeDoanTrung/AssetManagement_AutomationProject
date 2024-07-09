@@ -76,8 +76,6 @@ namespace AssetManagement.Pages.UserPage
             _saveButton.IsElementEnabled();
             _saveButton.ClickWithScroll();
         }
-
-
         public void CreateNewUser(User user)
         {
             InputFirstName(user.FirstName);

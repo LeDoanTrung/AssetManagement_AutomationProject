@@ -3,9 +3,9 @@ using AssetManagement.Library;
 using OpenQA.Selenium;
 
 
-namespace AssetManagement.Pages
+namespace AssetManagement.Pages.LoginPage
 {
-    public class LoginPage 
+    public class LoginPage
     {
         //Web ELements
         private Element _userNameInput = new Element(By.Id("username"));

@@ -4,9 +4,6 @@ using AssetManagement.DataProvider;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
 using AssetManagement.Pages.AssetPage;
-using AssetManagement.Pages.UserPage;
-
-
 
 namespace AssetManagement.Test.AssetTest
 {

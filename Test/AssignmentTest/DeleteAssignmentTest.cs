@@ -41,6 +41,7 @@ namespace AssetManagement.Test.AssignmentTest
             _manageAssetPage = _homePage.NavigateToMangeAssetPage();
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
             _createNewAssetPage.CreateNewAsset(createdAsset);
+            _manageAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Create new Assignment with valid data");
             _manageAssignmentPage = _homePage.NavigateToMangeAssignmentPage();

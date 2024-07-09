@@ -1,7 +1,6 @@
 ﻿using AssetManagement.DataObjects;
 using AssetManagement.DataProvider;
 using AssetManagement.Pages.AssetPage;
-using AssetManagement.Pages;
 using AssetManagement.Pages.AssignmentPage;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Constants;
+using AssetManagement.Pages;
 
 namespace AssetManagement.Test.AssignmentTest
 {
@@ -33,6 +33,7 @@ namespace AssetManagement.Test.AssignmentTest
             _manageAssetPage = _homePage.NavigateToMangeAssetPage();
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
             _createNewAssetPage.CreateNewAsset(createdAsset);
+            _manageAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Go to Manage Assignment Page");
             _manageAssignmentPage = _homePage.NavigateToMangeAssignmentPage();
