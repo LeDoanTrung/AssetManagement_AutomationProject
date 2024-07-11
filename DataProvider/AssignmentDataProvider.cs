@@ -50,8 +50,8 @@ namespace AssetManagement.DataProvider
         private static string GenerateNote()
         {
             var faker = new Faker();
-            string specification = faker.Lorem.Sentence(60, 10);
-            return specification.Length > 300 ? specification.Substring(0, 300).Trim() : specification;
+            string specification = faker.Lorem.Sentence(30, 10);
+            return specification.Length > 50 ? specification.Substring(0, 50).Trim() : specification;
         }
     }
 }

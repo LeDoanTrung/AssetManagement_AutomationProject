@@ -40,15 +40,12 @@ namespace AssetManagement.Pages
         {
             _message(message).WaitForElementToDisappear();
         }
-        public void Wait(int milliseconds)
-        {
-            Task.Delay(milliseconds).Wait();
-        }
 
         public void RefreshPage()
         {
             BrowserFactory.WebDriver.Navigate().Refresh();
         }
+
         public HomePage NavigateToManageHomePage(string menuItem = "Home")
         {
             _menuTab.SelectMenuItem(menuItem);

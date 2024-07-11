@@ -33,17 +33,17 @@ namespace AssetManagement.Pages
 
         public void VerifyAdminHomePage()
         {
-            _menuTab.GetMenuItem("Home").IsElementDisplayed().Should().BeTrue();
-            _menuTab.GetMenuItem("Manage User").IsElementDisplayed().Should().BeTrue();
-            _menuTab.GetMenuItem("Manage Asset").IsElementDisplayed().Should().BeTrue();
-            _menuTab.GetMenuItem("Manage Assignment").IsElementDisplayed().Should().BeTrue();
-            _menuTab.GetMenuItem("Request for Returning").IsElementDisplayed().Should().BeTrue();
-            _menuTab.GetMenuItem("Report").IsElementDisplayed().Should().BeTrue();
+            _menuTab.GetMenuItem("Home").IsElementExist().Should().BeTrue();
+            _menuTab.GetMenuItem("Manage User").IsElementExist().Should().BeTrue();
+            _menuTab.GetMenuItem("Manage Asset").IsElementExist().Should().BeTrue();
+            _menuTab.GetMenuItem("Manage Assignment").IsElementExist().Should().BeTrue();
+            _menuTab.GetMenuItem("Request for Returning").IsElementExist().Should().BeTrue();
+            _menuTab.GetMenuItem("Report").IsElementExist().Should().BeTrue();
         }
 
         public void VerifyStaffHomePage()
         {
-            _menuTab.GetMenuItem("Home").IsElementDisplayed().Should().BeTrue();
+            _menuTab.GetMenuItem("Home").IsElementExist().Should().BeTrue();
             _menuTab.GetMenuItem("Manage User").IsElementExist().Should().BeFalse();
             _menuTab.GetMenuItem("Manage Asset").IsElementExist().Should().BeFalse();
             _menuTab.GetMenuItem("Manage Assignment").IsElementExist().Should().BeFalse();
@@ -51,27 +51,27 @@ namespace AssetManagement.Pages
             _menuTab.GetMenuItem("Report").IsElementExist().Should().BeFalse();
         }
 
-        public bool IsAssignmentExist(string assetCode)
+        public bool IsAssignmentExist(string assetName)
         {
-            return _assignmentRow(assetCode).IsElementExist();
+            return _assignmentRow(assetName).IsElementExist();
         }
-        public void RequestForReturnAsset(string assetCode)
+        public void RequestForReturnAsset(string assetName)
         {
-            if (IsAssignmentExist(assetCode))
+            if (IsAssignmentExist(assetName))
             {
-                var returnIcon = _assignmentRow(assetCode).FindElement(By.CssSelector(_returnIconLocator));
+                var returnIcon = _assignmentRow(assetName).FindElement(By.CssSelector(_returnIconLocator));
                 returnIcon.Click();
-                _buttonOnModal("Return").Click();
+                _buttonOnModal("Yes").Click();
             }
         }
 
-        public void AcceptAssignment(string assetCode)
+        public void AcceptAssignment(string assetName)
         {
-            if (IsAssignmentExist(assetCode))
+            if (IsAssignmentExist(assetName))
             {
-                var acceptIcon = _assignmentRow(assetCode).FindElement(By.CssSelector(_acceptIconLocator));
+                var acceptIcon = _assignmentRow(assetName).FindElement(By.CssSelector(_acceptIconLocator));
                 acceptIcon.Click();
-                _buttonOnModal("Accept").Click();
+                _buttonOnModal("Yes").Click();
             }
         }
 

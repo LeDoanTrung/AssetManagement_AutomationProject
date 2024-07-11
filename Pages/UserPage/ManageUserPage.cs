@@ -16,7 +16,7 @@ namespace AssetManagement.Pages.UserPage
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No User Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
-        private Element _disableButtonModal = new Element(By.XPath("//button[.='Disable']"));
+        private Element _disableButtonModal = new Element(By.XPath("//button[.='Yes']"));
         private string _modalFieldTitle = "//div[contains(@class,'modal-field')]";
         private string _modalValue = "//div[contains(@class,'modal-value')]";
         private string _headerLocator = "#table-header th";

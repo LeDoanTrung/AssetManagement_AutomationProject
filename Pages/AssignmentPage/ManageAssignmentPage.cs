@@ -20,7 +20,7 @@ namespace AssetManagement.Pages.AssignmentPage
         private Element _searchIcon = new Element(By.Id("search-button"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
-        private Element _deleteButtonModal = new Element(By.XPath("//button[.='Delete']"));
+        private Element _deleteButtonModal = new Element(By.XPath("//button[.='Yes']"));
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";

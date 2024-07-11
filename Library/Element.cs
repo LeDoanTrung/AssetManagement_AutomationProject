@@ -145,5 +145,6 @@ namespace AssetManagement.Library
                 throw new WebDriverTimeoutException($"Element with locator: {this.By} did not disappear");
             }
         }
+
     }
 }

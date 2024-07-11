@@ -46,7 +46,7 @@ namespace AssetManagement.Pages.RequestForReturningPage
             {
                 var acceptIcon = _requestRow(assetCode).FindElement(By.CssSelector(_acceptIconLocator));
                 acceptIcon.Click();
-                _buttonOnModal("Accept").Click();
+                _buttonOnModal("Yes").Click();
             }
         }
 

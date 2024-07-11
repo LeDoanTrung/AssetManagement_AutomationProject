@@ -12,6 +12,7 @@ namespace AssetManagement.Pages.AssetPage
         private Element _specification = new Element(By.Id("specification"));
         private Element _installedDate = new Element(By.Id("installedDate"));
         private Element _saveButton = new Element(By.XPath("//button[text()='Save']"));
+        
         private Element _state(string state)
         {
             return new Element(By.XPath($"//label[text()='{state}']"));
@@ -49,12 +50,12 @@ namespace AssetManagement.Pages.AssetPage
 
         public void EditNewAsset(Asset asset)
         {
-            Wait(3000); // Wait for loading data
             InputAssetName(asset.Name);
             InputSpecification(asset.Specification);
             InputInstalledDate(asset.InstalledDate);
             SelectState(asset.State);
             ClickOnSaveBtn();
+            
         }
     }
 }

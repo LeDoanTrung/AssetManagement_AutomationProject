@@ -51,7 +51,7 @@ namespace AssetManagement.Test.RequestForReturningTest
             ExtentReportHelper.LogTestStep("Accept the created assignment at the Homepage");
             _homePage.NavigateToManageHomePage();
             _homePage.AcceptAssignment(createdAsset.Name);
-            _homePage.WaitForMessageDissapear(MessageConstant.AcceptAssignmentSuccessfullyMessage);
+            _homePage.WaitForLoading();
 
             ExtentReportHelper.LogTestStep("Return the asset at the Homepage");
             _homePage.RequestForReturnAsset(createdAsset.Name);
@@ -62,6 +62,7 @@ namespace AssetManagement.Test.RequestForReturningTest
 
             ExtentReportHelper.LogTestStep("Search and accept the request");
             _requestPage.EnterSearchKeyword(assetCode);
+            _requestPage.WaitForLoading();
             _requestPage.CompleteTheRequest(assetCode);
 
             ExtentReportHelper.LogTestStep("Verify after completing the request");

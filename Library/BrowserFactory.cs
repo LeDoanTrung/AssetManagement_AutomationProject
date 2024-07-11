@@ -42,7 +42,7 @@ namespace AssetManagement.Library
                     throw new ArgumentOutOfRangeException(browserName, "Browser not supported: " + browserName);
             }
 
-            Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(20));
+            Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(30));
         }
 
         public static void CloseDriver()

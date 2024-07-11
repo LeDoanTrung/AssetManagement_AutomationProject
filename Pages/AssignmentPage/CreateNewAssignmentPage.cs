@@ -75,6 +75,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public void ClickOnSaveBtn()
         {
+            _saveButton.IsElementDisplayed();
             _saveButton.Click();
         }
 

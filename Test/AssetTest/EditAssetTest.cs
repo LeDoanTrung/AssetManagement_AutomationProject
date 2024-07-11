@@ -42,6 +42,7 @@ namespace AssetManagement.Test.AssetTest
             ExtentReportHelper.LogTestStep("Edit the created asset");
             string createdAssetCode = _manageAssetPage.GetAssetCodeOfCreatedAsset();
             EditAssetPage _editAssetPage = _manageAssetPage.GoToEditAsset(createdAssetCode);
+            _editAssetPage.WaitForLoading();
             _editAssetPage.EditNewAsset(afterEditAsset);
             Asset expectedAsset = AssetUpdater.CreateExpectedAsset(beforeEditAsset, afterEditAsset);
 

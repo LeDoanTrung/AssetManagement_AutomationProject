@@ -24,7 +24,7 @@ namespace AssetManagement.Pages.AssetPage
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
         private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No Asset Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
-        private Element _deleteButtonModal = new Element(By.XPath("//button[.='Delete']"));
+        private Element _deleteButtonModal = new Element(By.XPath("//button[.='Yes']"));
         private string _modalFieldTitle = "div[name = 'asset_modal_row_header']";
         private string _modalValue = "div[name = 'asset_modal_row_data']";
         private string _headerLocator = "#table-header th";
