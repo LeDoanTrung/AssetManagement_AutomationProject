@@ -23,19 +23,28 @@ namespace AssetManagement.Test
             _loginPage = new LoginPage();
         }
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            string environment = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "Environment");
+            string browser = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "Browser");
+            string reportPath = CreateFolderStructure();
+            ExtentReportHelper.InitializeReport(reportPath, "Asset Management", environment, browser);
+        }
+
         [SetUp]
         public void Setup()
         {
-            string enviroment = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "Enviroment");
             string browser = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "Browser");
             double timeOutSec = double.Parse(ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.wait.seconds"));
             string pageLoadTime = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.pageLoad.seconds");
             string asyncJsTime = ConfigurationHelper.GetConfigurationByKey(Hooks.Config, "timeout.webdriver.asyncJavaScript.seconds");
-            string reportPath = CreateFolderStructure();
 
-            InitializeReport(reportPath, "Asset Management", enviroment, browser);
 
             InitializeWebDriver(browser, timeOutSec, pageLoadTime, asyncJsTime);
+
+            ExtentReportHelper.CreateTest(TestContext.CurrentContext.Test.ClassName);
+            ExtentReportHelper.CreateNode(TestContext.CurrentContext.Test.Name);
 
             GoToLoginPage();
 
@@ -65,7 +74,7 @@ namespace AssetManagement.Test
         private void InitializeWebDriver(string browser, double timeOutSec, string pageLoadTime, string asyncJsTime)
         {
             BrowserFactory.InitDriver(browser);
-            BrowserFactory.WebDriver.Manage().Window.Maximize();
+            //BrowserFactory.WebDriver.Manage().Window.Maximize();
             BrowserFactory.WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(timeOutSec);
             BrowserFactory.WebDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(double.Parse(pageLoadTime));
             BrowserFactory.WebDriver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(double.Parse(asyncJsTime));
@@ -84,11 +93,16 @@ namespace AssetManagement.Test
             var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace) ? "" : string.Format("{0}", TestContext.CurrentContext.Result.StackTrace);
 
             ExtentReportHelper.CreateTestResult(status, stacktrace, TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name, BrowserFactory.WebDriver);
-            ExtentReportHelper.Flush();
 
             BrowserFactory.WebDriver.Quit();
 
             Console.WriteLine("Base Test Tear Down");
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            ExtentReportHelper.Flush();
         }
 
     }

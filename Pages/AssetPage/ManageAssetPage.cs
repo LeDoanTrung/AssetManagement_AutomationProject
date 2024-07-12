@@ -36,6 +36,11 @@ namespace AssetManagement.Pages.AssetPage
         {
             return new Element(By.XPath($"//td[.='{assetCode}']/.."));
         }
+        private Element _assetField(string assetCode)
+        {
+            return new Element(By.XPath($"//td[.='{assetCode}']"));
+        }
+
         private Element _editIcon(string assetCode)
         {
             return new Element(By.XPath($"//td[.='{assetCode}']/..//button[@name='table_icon_pencil']"));
@@ -53,7 +58,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public EditAssetPage GoToEditAsset(string assetCode)
         {
-            _editIcon(assetCode).Click();
+            _editIcon(assetCode).ClickWithScroll();
             return new EditAssetPage(); 
         }
 
@@ -103,7 +108,7 @@ namespace AssetManagement.Pages.AssetPage
         {
             WaitForLoading();
             string assetCode = GetAssetCodeOfCreatedAsset();
-            _assetRow(assetCode).Click();
+            _assetField(assetCode).Click();
         }
 
         public void CloseModal()
