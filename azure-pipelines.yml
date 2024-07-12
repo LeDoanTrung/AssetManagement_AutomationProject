@@ -42,4 +42,10 @@ steps:
     testResultsFiles: 'results.xml'
     testRunTitle: 'Automation Test'
   displayName: 'Publish Test Result'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: TestResults
+    artifact: TestResults
+    publishLocation: 'pipeline'
+  condition: succeededOrFailed()
 
