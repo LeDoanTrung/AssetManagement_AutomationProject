@@ -44,7 +44,7 @@ steps:
   displayName: 'Publish Test Result'
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: TestResults
+    targetPath: bin/**/**/TestResults
     artifact: TestResults
     publishLocation: 'pipeline'
   condition: succeededOrFailed()
