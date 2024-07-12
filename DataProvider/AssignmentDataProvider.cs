@@ -11,12 +11,24 @@ namespace AssetManagement.DataProvider
     public class AssignmentDataProvider
     {
         private static readonly Random Random = new Random();
+
         public static Assignment CreateRandomValidAssignment()
         {
             var assignment = new Assignment
             {
                 AssignedDate = GenerateAssignedDate(),
                 Note = GenerateNote(),
+            };
+
+            return assignment;
+        }
+
+        public static Assignment CreateRandomValidAssignmentForReturning()
+        {
+            var assignment = new Assignment
+            {
+                AssignedDate = GenerateAssignedDate(),
+                Note = GenerateToday(),
             };
 
             return assignment;

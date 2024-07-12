@@ -29,9 +29,11 @@ namespace AssetManagement.Test.AssignmentTest
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
 
-            ExtentReportHelper.LogTestStep("Create new Asset with valid data for assignment");
+            ExtentReportHelper.LogTestStep("Go to Create Asset page");
             _manageAssetPage = _homePage.NavigateToMangeAssetPage();
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
+
+            ExtentReportHelper.LogTestStep("Create new Asset with valid data for assignment");
             _createNewAssetPage.CreateNewAsset(createdAsset);
             _manageAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
@@ -44,8 +46,10 @@ namespace AssetManagement.Test.AssignmentTest
             ExtentReportHelper.LogTestStep("Create new Assignment with valid data");
             _createNewAssignmentPage.CreateNewAssignment(createdAssignment, valid_user.FullName, createdAsset.Name);
 
-            ExtentReportHelper.LogTestStep("Verify Assignment information");
+            ExtentReportHelper.LogTestStep("Verify message");
             _manageAssignmentPage.VerifyMessage(MessageConstant.CreateAssignmentSuccessfullyMessage);
+
+            ExtentReportHelper.LogTestStep("Verify Assignment information");
             _manageAssignmentPage.VerifyAssignmentInformation(createdAssignment, valid_user, valid_user, createdAsset);
             _manageAssignmentPage.CloseModal();
             _manageAssignmentPage.StoreDataToDelete();

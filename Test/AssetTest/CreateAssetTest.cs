@@ -30,8 +30,10 @@ namespace AssetManagement.Test.AssetTest
             ExtentReportHelper.LogTestStep("Create new Asset with valid data");
             _createNewAssetPage.CreateNewAsset(createdAsset);
 
-            ExtentReportHelper.LogTestStep("Verify asset information");
+            ExtentReportHelper.LogTestStep("Verify message");
             _manageAssetPage.VerifyMessage(MessageConstant.CreateAsssetSuccessfullyMessage);
+
+            ExtentReportHelper.LogTestStep("Verify asset information");
             _manageAssetPage.VerifyAssetInformation(createdAsset);
             _manageAssetPage.CloseModal();
             _manageAssetPage.StoreDataToDelete();

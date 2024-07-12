@@ -18,6 +18,9 @@ namespace AssetManagement.Test.TestLogin
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
 
+            ExtentReportHelper.LogTestStep("Verify message");
+            _homePage.VerifyMessage(MessageConstant.LoginSuccessfullyMessage);
+
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
             _homePage.IsAtHomePage();
             _homePage.VerifyAdminHomePage();
@@ -31,6 +34,9 @@ namespace AssetManagement.Test.TestLogin
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
+
+            ExtentReportHelper.LogTestStep("Verify message");
+            _homePage.VerifyMessage(MessageConstant.LoginSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
             _homePage.IsAtHomePage();

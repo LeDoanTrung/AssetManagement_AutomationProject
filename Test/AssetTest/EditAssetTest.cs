@@ -38,7 +38,7 @@ namespace AssetManagement.Test.AssetTest
             ExtentReportHelper.LogTestStep("Create new asset with valid data");
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
             _createNewAssetPage.CreateNewAsset(beforeEditAsset);
-            //_createNewAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
+            _createNewAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Edit the created asset");
             string createdAssetCode = _manageAssetPage.GetAssetCodeOfCreatedAsset();
@@ -47,8 +47,10 @@ namespace AssetManagement.Test.AssetTest
             _editAssetPage.EditNewAsset(afterEditAsset);
             Asset expectedAsset = AssetUpdater.CreateExpectedAsset(beforeEditAsset, afterEditAsset);
 
-            ExtentReportHelper.LogTestStep("Verify user information");
+            ExtentReportHelper.LogTestStep("Verify message");
             _manageAssetPage.VerifyMessage(MessageConstant.UpdateAsssetSuccessfullyMessage);
+
+            ExtentReportHelper.LogTestStep("Verify user information");
             _manageAssetPage.VerifyAssetInformation(expectedAsset);
             _manageAssetPage.CloseModal();
             _manageAssetPage.StoreDataToDelete();

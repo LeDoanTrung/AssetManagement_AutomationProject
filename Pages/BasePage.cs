@@ -66,7 +66,6 @@ namespace AssetManagement.Pages
 
         public ManageAssignmentPage NavigateToMangeAssignmentPage(string menuItem = "Manage Assignment")
         {
-            Wait(1000);
             _menuTab.SelectMenuItem(menuItem);
             return new ManageAssignmentPage();
         }

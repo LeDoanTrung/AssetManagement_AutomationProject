@@ -20,9 +20,6 @@ namespace AssetManagement.Library
             {
                 case "chrome":
                     var chromeOptions = new ChromeOptions();
-                    //chromeOptions.AddArguments("test-type");
-                    //chromeOptions.AddArguments("--no-sandbox");
-                    //WebDriver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), chromeOptions);
                     WebDriver =  new ChromeDriver();
                     break;
 

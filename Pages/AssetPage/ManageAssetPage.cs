@@ -64,7 +64,6 @@ namespace AssetManagement.Pages.AssetPage
 
         public string GetAssetCodeOfCreatedAsset()
         {
-            Wait(1000);
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
             string assetCode = cells.ElementAt(assetCodeIndex).Text;

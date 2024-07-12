@@ -47,8 +47,10 @@ namespace AssetManagement.Test.AssetTest
             string createdAssetCode = _manageAssetPage.GetAssetCodeOfCreatedAsset();
             _manageAssetPage.DeleteAsset(createdAssetCode);
 
-            ExtentReportHelper.LogTestStep("Verify that delete Asset successfully");
+            ExtentReportHelper.LogTestStep("Verify message");
             _manageAssetPage.VerifyMessage(MessageConstant.DeleteAssetSuccesfullyMessage);
+
+            ExtentReportHelper.LogTestStep("Verify that delete Asset successfully");
             _manageAssetPage.EnterSearchKeyword(createdAssetCode);
             _manageAssetPage.IsAssetExist(createdAssetCode).Should().BeFalse();
         }
