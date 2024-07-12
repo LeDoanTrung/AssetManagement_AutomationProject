@@ -1,6 +1,6 @@
 ﻿using AssetManagement.DataObjects;
-using AssetManagement.Extenstions;
 using AssetManagement.Library;
+using AssetManagement.Library.Util;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public void InputAssignedDate(string date)
         {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
+            string formattedDate = StringUtility.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
             _assignedDate.SendKeys(formattedDate);
         }
 

@@ -27,5 +27,8 @@ namespace AssetManagement.Constants
         //Return Assignment Message
         public const string ReturnAssignmentSuccessfullyMessage = "Create request successfully.";
         public const string AcceptRequestOfReturningMessage = "Complete Return Request Succesfully";
+
+        //Login successfully Message
+        public const string LoginSuccessfullyMessage = "User login successfully.";
     }
 }

@@ -41,11 +41,6 @@ namespace AssetManagement.Pages
             _message(message).WaitForElementToDisappear();
         }
 
-        public void RefreshPage()
-        {
-            BrowserFactory.WebDriver.Navigate().Refresh();
-        }
-
         public HomePage NavigateToManageHomePage(string menuItem = "Home")
         {
             _menuTab.SelectMenuItem(menuItem);
@@ -76,10 +71,5 @@ namespace AssetManagement.Pages
             return new RequestReturningPage();
         }
 
-        public ReportPage NavigateToReportPage(string menuItem = "Report")
-        {
-            _menuTab.SelectMenuItem(menuItem);
-            return new ReportPage();
-        }
     }
 }

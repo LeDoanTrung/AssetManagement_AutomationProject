@@ -12,7 +12,7 @@ namespace AssetManagement.Pages
 
         public void SelectMenuItem(string itemName)
         {
-            _menuItem(itemName).ClickWithScroll();
+            _menuItem(itemName).Click();
         }
 
         public Element GetMenuItem(string itemName)

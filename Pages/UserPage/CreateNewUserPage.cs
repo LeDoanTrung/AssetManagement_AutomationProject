@@ -1,6 +1,6 @@
 ﻿using AssetManagement.DataObjects;
-using AssetManagement.Extenstions;
 using AssetManagement.Library;
+using AssetManagement.Library.Util;
 using FluentAssertions;
 using OpenQA.Selenium;
 using System;
@@ -43,12 +43,12 @@ namespace AssetManagement.Pages.UserPage
 
         public void InputDateOfBirth(string date)
         {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
+            string formattedDate = StringUtility.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
             _dateOfBirth.SendKeys(formattedDate);
         }
         public void InputJoinedDate(string date)
         {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
+            string formattedDate = StringUtility.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
             _joinedDate.SendKeys(formattedDate);
         }
 

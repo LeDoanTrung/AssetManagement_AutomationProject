@@ -14,7 +14,6 @@ namespace AssetManagement.Pages.UserPage
         private Element _searchBar = new Element(By.Id("search-input"));
         private Element _searchIcon = new Element(By.Id("search-button"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
-        private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No User Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
         private Element _disableButtonModal = new Element(By.XPath("//button[.='Yes']"));
         private string _modalFieldTitle = "//div[contains(@class,'modal-field')]";
@@ -22,11 +21,17 @@ namespace AssetManagement.Pages.UserPage
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";
-        private string _disableIconLocator = "svg[data-icon='circle-xmark']";
-        private string _editIconLocator = "svg[data-icon='pencil']";
         private Element _userRow(string staffCode)
         {
             return new Element(By.XPath($"//td[.='{staffCode}']/.."));
+        }
+        private Element _editIcon(string staffCode)
+        {
+            return new Element(By.XPath($"//td[.='{staffCode}']/..//button[@name='table_icon_pencil']"));
+        }
+        private Element _disableIcon(string staffCode)
+        {
+            return new Element(By.XPath($"//td[.='{staffCode}']/..//button[@name='table_icon_circle-xmark']"));
         }
 
         //Method
@@ -37,8 +42,7 @@ namespace AssetManagement.Pages.UserPage
         }
         public EditUserPage GoToEditUser(string staffCode)
         {
-            var editIcon = _userRow(staffCode).FindElement(By.CssSelector(_editIconLocator));
-            editIcon.Click();
+            _editIcon(staffCode).Click();
             return new EditUserPage();
         }
 
@@ -197,8 +201,7 @@ namespace AssetManagement.Pages.UserPage
         {
             if (IsUserEnabled(staffCode))
             {
-                var disableIcon = _userRow(staffCode).FindElement(By.CssSelector(_disableIconLocator));
-                disableIcon.Click();
+                _disableIcon(staffCode).Click();
                 _disableButtonModal.Click();
             }
         }

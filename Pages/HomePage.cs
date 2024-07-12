@@ -14,16 +14,20 @@ namespace AssetManagement.Pages
     public class HomePage : BasePage
     {
         //Element
-        private string _returnIconLocator = "svg[data-icon='rotate-left']";
-        private string _acceptIconLocator = "svg[data-icon='check']";
         private Element _assignmentRow(string assetCode)
         {
             return new Element(By.XPath($"//td[.='{assetCode}']/.."));
         }
-        private Element _buttonOnModal(string value)
+        private Element _acceptIcon(string assetCode)
         {
-            return new Element(By.XPath($"//button[.='{value}']"));
+            return new Element(By.XPath($"//td[.='{assetCode}']/..//button[@name='table_icon_check']"));
         }
+        private Element _returnIcon(string assetCode)
+        {
+            return new Element(By.XPath($"//td[.='{assetCode}']/..//button[@name='table_icon_rotate-left']"));
+        }
+        private Element _yesBtn = new Element(By.XPath("//button[.='Yes']"));
+
 
         //Method
         public void IsAtHomePage()
@@ -51,27 +55,22 @@ namespace AssetManagement.Pages
             _menuTab.GetMenuItem("Report").IsElementExist().Should().BeFalse();
         }
 
-        public bool IsAssignmentExist(string assetName)
+        public bool IsAssignmentExist(string assetCode)
         {
-            return _assignmentRow(assetName).IsElementExist();
+            return _assignmentRow(assetCode).IsElementExist();
         }
-        public void RequestForReturnAsset(string assetName)
+        public void RequestForReturnAsset(string assetCode)
         {
-            if (IsAssignmentExist(assetName))
-            {
-                var returnIcon = _assignmentRow(assetName).FindElement(By.CssSelector(_returnIconLocator));
-                returnIcon.Click();
-                _buttonOnModal("Yes").Click();
-            }
-        }
+            _returnIcon(assetCode).ClickWithScroll();
+            _yesBtn.Click();
+        }        
 
-        public void AcceptAssignment(string assetName)
+        public void AcceptAssignment(string assetCode)
         {
-            if (IsAssignmentExist(assetName))
+            if (IsAssignmentExist(assetCode))
             {
-                var acceptIcon = _assignmentRow(assetName).FindElement(By.CssSelector(_acceptIconLocator));
-                acceptIcon.Click();
-                _buttonOnModal("Yes").Click();
+                _acceptIcon(assetCode).Click();
+                _yesBtn.Click();
             }
         }
 

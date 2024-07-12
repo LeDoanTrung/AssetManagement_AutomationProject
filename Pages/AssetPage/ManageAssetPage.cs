@@ -22,26 +22,28 @@ namespace AssetManagement.Pages.AssetPage
         private Element _searchBar = new Element(By.Id("search-input"));
         private Element _searchIcon = new Element(By.Id("search-button"));
         private Element _nextButton = new Element(By.XPath("//span[text()='Next']"));
-        private Element _noRowsFoundMessage = new Element(By.XPath("//h4[text()=' No Asset Found']"));
         private Element _closeModalIcon = new Element(By.Id("close-modal-button"));
         private Element _deleteButtonModal = new Element(By.XPath("//button[.='Yes']"));
-        private string _modalFieldTitle = "div[name = 'asset_modal_row_header']";
-        private string _modalValue = "div[name = 'asset_modal_row_data']";
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";
-        private string _deleteIconLocator = "svg[data-icon='circle-xmark']";
-        private string _editIconLocator = "svg[data-icon='pencil']";
         private string _showMoreLocator = "//span[text()=' Show more']";
         private Element _modalData(string field)
         {
-            return new Element(By.XPath($"//div[text()='{field}' and @name='asset_modal_row_header']/following-sibling::div"));
+            return new Element(By.XPath($"//div[text()='{field}']/following-sibling::div[@name='asset_modal_row_data']"));
         }
         private Element _assetRow(string assetCode)
         {
             return new Element(By.XPath($"//td[.='{assetCode}']/.."));
         }
-
+        private Element _editIcon(string assetCode)
+        {
+            return new Element(By.XPath($"//td[.='{assetCode}']/..//button[@name='table_icon_pencil']"));
+        }
+        private Element _deleteIcon(string assetCode)
+        {
+            return new Element(By.XPath($"//td[.='{assetCode}']/..//button[@name='table_icon_circle-xmark']"));
+        }
         //Method
         public CreateNewAssetPage GoToCreateAssetPage()
         {
@@ -51,8 +53,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public EditAssetPage GoToEditAsset(string assetCode)
         {
-            var editIcon = _assetRow(assetCode).FindElement(By.CssSelector(_editIconLocator));
-            editIcon.Click();
+            _editIcon(assetCode).Click();
             return new EditAssetPage(); 
         }
 
@@ -207,8 +208,7 @@ namespace AssetManagement.Pages.AssetPage
         {
             if (IsAssetExist(assetCode))
             {
-                var deleteIcon = _assetRow(assetCode).FindElement(By.CssSelector(_deleteIconLocator));
-                deleteIcon.Click();
+                _deleteIcon(assetCode).Click();
                 _deleteButtonModal.Click();
             }
 

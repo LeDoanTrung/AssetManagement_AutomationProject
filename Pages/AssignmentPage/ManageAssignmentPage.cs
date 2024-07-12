@@ -24,8 +24,6 @@ namespace AssetManagement.Pages.AssignmentPage
         private string _headerLocator = "#table-header th";
         private string _tableRow = "#table tbody tr";
         private string _cellLocator = "#table tbody td";
-        private string _deleteIconLocator = "svg[data-icon='circle-xmark']";
-        private string _editIconLocator = "svg[data-icon='pencil']";
         private string _showMoreLocator = "//span[text()=' Show more']";
         private Element _modalData(string field) 
         {
@@ -35,6 +33,11 @@ namespace AssetManagement.Pages.AssignmentPage
         {
             return new Element(By.XPath($"//td[.='{assignmentId}']/.."));
         }
+        private Element _deleteIcon(string assignmentId)
+        {
+            return new Element(By.XPath($"//td[.='{assignmentId}']/..//button[@name='table_icon_circle-xmark']"));
+        }
+
         private Element _selectedRow(string assetName, string status)
         {
             return new Element(By.XPath($"//div[text()='{status}']/ancestor::tr/descendant::div[text()='{assetName}']"));
@@ -189,8 +192,7 @@ namespace AssetManagement.Pages.AssignmentPage
         {
             if (IsAssignmentExist(assignmentId))
             {
-                var deleteIcon = _assignmentRow(assignmentId).FindElement(By.CssSelector(_deleteIconLocator));
-                deleteIcon.Click();
+                _deleteIcon(assignmentId).Click();
                 _deleteButtonModal.Click();
             }           
         }

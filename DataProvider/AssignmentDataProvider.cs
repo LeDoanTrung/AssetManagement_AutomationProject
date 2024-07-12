@@ -22,17 +22,6 @@ namespace AssetManagement.DataProvider
             return assignment;
         }
 
-        public static Assignment CreateRandomValidAssignmentForReturning()
-        {
-            var assignment = new Assignment
-            {
-                AssignedDate = GenerateToday(),
-                Note = GenerateNote(),
-            };
-
-            return assignment;
-        }
-
         private static string GenerateToday()
         {
             DateTime assignedDate = DateTime.Today;

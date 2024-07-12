@@ -1,4 +1,5 @@
-﻿using AssetManagement.DataObjects;
+﻿using AssetManagement.Constants;
+using AssetManagement.DataObjects;
 using AssetManagement.Library;
 using AssetManagement.Library.ReportHelper;
 using AssetManagement.Pages;
@@ -18,6 +19,9 @@ namespace AssetManagement.Test.TestLogin
             HomePage _homePage = _loginPage.Login(valid_user);
 
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
+            _homePage.VerifyMessage(MessageConstant.LoginSuccessfullyMessage);
+
+            ExtentReportHelper.LogTestStep("Verify is at Homepage");
             _homePage.IsAtHomePage();
             _homePage.VerifyAdminHomePage();
         }
@@ -30,6 +34,9 @@ namespace AssetManagement.Test.TestLogin
 
             ExtentReportHelper.LogTestStep("Login");
             HomePage _homePage = _loginPage.Login(valid_user);
+
+            ExtentReportHelper.LogTestStep("Verify is at Homepage");
+            _homePage.VerifyMessage(MessageConstant.LoginSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Verify is at Homepage");
             _homePage.IsAtHomePage();

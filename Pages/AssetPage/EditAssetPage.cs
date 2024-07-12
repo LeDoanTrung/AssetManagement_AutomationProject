@@ -1,6 +1,6 @@
 ﻿using AssetManagement.DataObjects;
-using AssetManagement.Extenstions;
 using AssetManagement.Library;
+using AssetManagement.Library.Util;
 using OpenQA.Selenium;
 
 namespace AssetManagement.Pages.AssetPage
@@ -33,7 +33,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public void InputInstalledDate(string date)
         {
-            string formattedDate = StringExtensions.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
+            string formattedDate = StringUtility.ConvertDateFormat(date, "dd/MM/yyyy", "MM/dd/yyyy");
             _installedDate.SendKeys(formattedDate);
         }
 
@@ -55,7 +55,6 @@ namespace AssetManagement.Pages.AssetPage
             InputInstalledDate(asset.InstalledDate);
             SelectState(asset.State);
             ClickOnSaveBtn();
-            
         }
     }
 }

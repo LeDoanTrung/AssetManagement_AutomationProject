@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetManagement.Extenstions
+namespace AssetManagement.Library.Util
 {
-    public static class StringExtensions
+    public static class StringUtility
     {
         public static string GetAbsolutePath(this string filePath)
         {
