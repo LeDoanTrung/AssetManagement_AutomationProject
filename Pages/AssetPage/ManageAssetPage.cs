@@ -59,7 +59,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public string GetAssetCodeOfCreatedAsset()
         {
-            WaitForLoading(); // Wait for fetching data
+            Wait(1000);
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             var cells = BrowserFactory.WebDriver.FindElements(By.CssSelector(_cellLocator));
             string assetCode = cells.ElementAt(assetCodeIndex).Text;
@@ -101,6 +101,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public void OpenDetailCreatedRecord()
         {
+            WaitForLoading();
             string assetCode = GetAssetCodeOfCreatedAsset();
             _assetRow(assetCode).Click();
         }
@@ -148,7 +149,6 @@ namespace AssetManagement.Pages.AssetPage
 
         public bool VerifySearchAssetWithAssociatedResult(string keyword)
         {
-            WaitForLoading(); // Wait for loading data
             int assetCodeIndex = FindIndexOfHeaderColumn("Asset Code");
             int assetNameIndex = FindIndexOfHeaderColumn("Asset Name");
 
@@ -216,6 +216,7 @@ namespace AssetManagement.Pages.AssetPage
 
         public void StoreDataToDelete()
         {
+            WaitForLoading();
             string assetCode = GetAssetCodeOfCreatedAsset();
 
             DataStorage.SetData("hasCreatedAsset", true);

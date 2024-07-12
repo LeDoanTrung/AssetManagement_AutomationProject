@@ -43,6 +43,7 @@ namespace AssetManagement.Test.AssetTest
             _manageAssetPage.EnterSearchKeyword(createdAsset.Name);
 
             ExtentReportHelper.LogTestStep("Verify search result");
+            _manageAssetPage.WaitForLoading();
             _manageAssetPage.VerifySearchAssetWithAssociatedResult(createdAsset.Name);
 
             _manageAssetPage.StoreDataToDelete();

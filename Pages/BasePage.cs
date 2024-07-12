@@ -41,6 +41,11 @@ namespace AssetManagement.Pages
             _message(message).WaitForElementToDisappear();
         }
 
+        public void Wait(int milliseconds)
+        {
+            Task.Delay(milliseconds).Wait();
+        }
+
         public HomePage NavigateToManageHomePage(string menuItem = "Home")
         {
             _menuTab.SelectMenuItem(menuItem);
@@ -61,6 +66,7 @@ namespace AssetManagement.Pages
 
         public ManageAssignmentPage NavigateToMangeAssignmentPage(string menuItem = "Manage Assignment")
         {
+            Wait(1000);
             _menuTab.SelectMenuItem(menuItem);
             return new ManageAssignmentPage();
         }

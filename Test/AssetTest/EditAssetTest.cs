@@ -38,7 +38,7 @@ namespace AssetManagement.Test.AssetTest
             ExtentReportHelper.LogTestStep("Create new asset with valid data");
             CreateNewAssetPage _createNewAssetPage = _manageAssetPage.GoToCreateAssetPage();
             _createNewAssetPage.CreateNewAsset(beforeEditAsset);
-            _createNewAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
+            //_createNewAssetPage.WaitForMessageDissapear(MessageConstant.CreateAsssetSuccessfullyMessage);
 
             ExtentReportHelper.LogTestStep("Edit the created asset");
             string createdAssetCode = _manageAssetPage.GetAssetCodeOfCreatedAsset();

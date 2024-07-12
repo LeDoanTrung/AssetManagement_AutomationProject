@@ -104,6 +104,7 @@ namespace AssetManagement.Pages.AssignmentPage
 
         public void VerifyCreatedAssignment(Assignment assignment, Account assignedToAccount, Account assignedByAccount , Asset asset)
         {
+            Wait(1000);
             string assetName = _modalData("assetName").GetText();
             string specification = _modalData("specification").GetText().Replace(" Show less", "");
             string assignedTo = _modalData("assignedTo").GetText();
